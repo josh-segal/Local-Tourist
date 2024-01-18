@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}My Plan{% endblock %}
+{% endblock %}
+{% block content %}
+    <form action="{{ url_for('list.clear', user_id=g.user['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+<!--    <li><a href="{{ url_for('list.clear', user_id=g.user['id']) }}">Clear Plan</a>-->
+    </h1>
+  {% for attraction in attractions %}
+    <article class="attraction">
+      <header>
+        <div>
+          <h1>{{ attraction['name'] }}</h1>
+          <div class="description">
+            location: {{ attraction['location'] }} <br>
+            </div>
+        </div>
+      </header>
+      <p class="body"> </p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

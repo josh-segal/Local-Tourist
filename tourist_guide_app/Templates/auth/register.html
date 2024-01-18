@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+      <p>How interested are you in cultural related attractions?</p>
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" name="cultureRange" id="cultureRange">
+        <p>Value: <span id="cultureScore"></span></p>
+</div>
+      <p>How interested are you in historic related attractions?</p>
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" name="historicRange" id="historicRange">
+        <p>Value: <span id="historicScore"></span></p>
+</div>
+      <p>How interested are you in food related attractions?</p>
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" name="foodRange" id="foodRange">
+        <p>Value: <span id="foodScore"></span></p>
+</div>
+      <p>How interested are you in scenic related attractions?</p>
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="50" class="slider" name="scenicRange" id="scenicRange">
+        <p>Value: <span id="scenicScore"></span></p>
+</div>
+    <input type="submit" value="Register">
+  </form>
+
+
+<script>
+    var slider1 = document.getElementById("cultureRange");
+var output1 = document.getElementById("cultureScore");
+output1.innerHTML = slider1.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider1.oninput = function() {
+  output1.innerHTML = this.value;
+}
+
+var slider2 = document.getElementById("historicRange");
+var output2 = document.getElementById("historicScore");
+output2.innerHTML = slider2.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider2.oninput = function() {
+  output2.innerHTML = this.value;
+}
+
+var slider3 = document.getElementById("foodRange");
+var output3 = document.getElementById("foodScore");
+output3.innerHTML = slider3.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider3.oninput = function() {
+  output3.innerHTML = this.value;
+}
+
+var slider4 = document.getElementById("scenicRange");
+var output4 = document.getElementById("scenicScore");
+output4.innerHTML = slider4.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider4.oninput = function() {
+  output4.innerHTML = this.value;
+}
+</script>
+
+
+{% endblock %}
+

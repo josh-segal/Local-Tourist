@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}List of Attractions{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+  {% for attraction in attractions %}
+    <article class="attraction">
+      <header>
+        <div>
+          <h1>{{ attraction['name'] }}</h1>
+          <div class="description">
+            location: {{ attraction['location'] }} <br>
+            </div>
+        </div>
+        {% if g.user %}
+    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user['id'], attraction_id=attraction['attractionID']) }}">
+        <button type="submit" class="action">Add to trip</button>
+    </form>
+        {% endif %}
+      </header>
+      <p class="body"> </p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
