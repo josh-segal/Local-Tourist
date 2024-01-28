@@ -4,8 +4,8 @@ def bubble_sort_attractions(attractions, user_preferences):
 
     for i in range(n-1):
         for j in range(0, n - i - 1):
-            score_j = sum(user_preferences[key] * attractions[j][key] for key in user_preferences)
-            score_j1 = sum(user_preferences[key] * attractions[j + 1][key] for key in user_preferences)
+            score_j = sum(user_preferences[k] * attractions[j][k] for k in range(0, len(user_preferences) - 1))
+            score_j1 = sum(user_preferences[k] * attractions[j + 1][k] for k in range(0, len(user_preferences) - 1))
 
             if score_j < score_j1:
                 swapped = True

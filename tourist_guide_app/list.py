@@ -22,27 +22,27 @@ def index():
             ' FROM attractions '
             ' ORDER BY attractionID'
         ).fetchall()
-        preferences = db.execute(
-            'SELECT preferences '
-            'FROM user'
-        ).fetchall()
-        # user_preferences = []
-        # for key in preferences:
-        #     user_preferences.append(key)
-        user_preferences = {
-            "culture": 1,
-            "history": 1,
-            "food": 5,
-            "scenic": 1,
-        }
+        preferences = db.execute('''
+        SELECT 
+            json_extract(preferences, '$.culture') AS culture_score,
+            json_extract(preferences, '$.history') AS historic_score,
+            json_extract(preferences, '$.food') AS food_score,
+            json_extract(preferences, '$.scenic') AS scenic_score
+        FROM user
+        ''').fetchall()
+
+        user_preferences = []
+        for row in preferences:
+            user_preferences.append(int(row[0]))
+        # user_preferences = {
+        #     "culture": 1,
+        #     "history": 1,
+        #     "food": 5,
+        #     "scenic": 1,
+        # }
         attractions_sorted = bubble_sort_attractions(attractions, user_preferences)
 
         print(preferences, file=sys.stdout)
-        # print(attractions[1]['food'], file=sys.stdout)
-        # for attraction in attractions_sorted:
-        #     print(attraction['name'], file=sys.stdout)
-        # for attraction in attractions:
-        #     print(attraction['name'], file=sys.stdout)
         return render_template('list/index.html', attractions=attractions_sorted)
     else:
         db = get_db()
