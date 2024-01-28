@@ -34,15 +34,8 @@ def index():
         user_preferences = []
         for row in preferences:
             user_preferences.append(int(row[0]))
-        # user_preferences = {
-        #     "culture": 1,
-        #     "history": 1,
-        #     "food": 5,
-        #     "scenic": 1,
-        # }
         attractions_sorted = bubble_sort_attractions(attractions, user_preferences)
 
-        print(preferences, file=sys.stdout)
         return render_template('list/index.html', attractions=attractions_sorted)
     else:
         db = get_db()
@@ -63,7 +56,7 @@ def add_to_trip(user_id, attraction_id):
         f'CREATE TABLE IF NOT EXISTS user_attractions_{user_id} ('
         'user_attraction_id INTEGER PRIMARY KEY AUTOINCREMENT,'
         'attraction_id INTEGER,'
-        'FOREIGN KEY (attraction_id) REFERENCES attractions(attractionID)'  
+        'FOREIGN KEY (attraction_id) REFERENCES attractions(attractionID)'
         ')'
     )
     db.commit()
@@ -82,22 +75,51 @@ def add_to_trip(user_id, attraction_id):
 @bp.route('/plan/<int:user_id>')
 def plan(user_id):
     db = get_db()
-    attractions = db.execute(
-        'SELECT * '
-        'FROM attractions '
-        f'INNER JOIN user_attractions_{user_id} '
-        f'ON attractions.attractionID = user_attractions_{user_id}.attraction_id'
-    ).fetchall()
-    #implement sorting with geolocation here ?
-    return render_template('list/plan.html', attractions=attractions)
+    if user_db_exists(user_id):
+        attractions = db.execute(
+            f'SELECT attractions.*, user_attractions_{user_id}.user_attraction_id '
+            'FROM attractions '
+            f'INNER JOIN user_attractions_{user_id} '
+            f'ON attractions.attractionID = user_attractions_{user_id}.attraction_id'
+        ).fetchall()
+        # implement sorting with geolocation here ?
+        return render_template('list/plan.html', attractions=attractions)
+    else:
+        flash('You have nothing planned yet.')
+        return render_template('list/plan.html')
 
 
 @bp.route('/plan/<int:user_id>', methods=('POST',))
 @login_required
 def clear(user_id):
     db = get_db()
-    db.execute(
-        f'DROP TABLE user_attractions_{user_id} '
-    )
-    db.commit()
+    if user_db_exists(user_id):
+        db.execute(
+            f'DROP TABLE user_attractions_{user_id} '
+        )
+        db.commit()
     return redirect(url_for('index'))
+
+
+@bp.route('/plan/<int:user_id>/<int:user_attraction_id>', methods=('DELETE', 'POST'))
+@login_required
+def clear_single(user_id, user_attraction_id):
+    db = get_db()
+    if user_db_exists(user_id):
+        db.execute(
+            f'DELETE FROM user_attractions_{user_id} '
+            f'WHERE user_attraction_id = {user_attraction_id} '
+        )
+        db.commit()
+    return redirect(url_for('list.plan', user_id=user_id))
+
+def user_db_exists(user_id):
+    db = get_db()
+    if (db.execute(
+            "SELECT name "
+            "FROM sqlite_master "
+            "WHERE type='table' "
+            "AND name=?;", (f"user_attractions_{user_id}",)
+    ).fetchone() is not None):
+        return True
+    return False

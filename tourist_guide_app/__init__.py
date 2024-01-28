@@ -39,4 +39,8 @@ def create_app(test_config=None):
     app.register_blueprint(list.bp)
     app.add_url_rule('/', endpoint='index')
 
+    from . import trip
+    app.register_blueprint(trip.bp)
+    app.add_url_rule('/', endpoint='trip')
+
     return app
