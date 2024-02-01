@@ -47,3 +47,10 @@ def tsp_attractions(distances):
     optimal_path.insert(0, 0)  # Add the starting point to complete the loop
 
     return optimal_distance, optimal_path
+
+
+#     def merge_sort_attraction_ranking(side, attractions, attraction):
+#         # given side go into that half of attractions, give user choice of left or right of mid-index attraction
+#         #if half they choose is empty, return list page, and place attraction at ranked spot
+# # if list not empty return form page again with new comparison
+

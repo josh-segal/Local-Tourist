@@ -12,7 +12,7 @@ from tourist_guide_app.algorithms import tsp_attractions
 import sys
 import googlemaps
 
-gmaps = googlemaps.Client(key='AIzaSyBsNhfVNrw4Qh6dFsWLP5u93db4lG75EXY')
+gmaps = googlemaps.Client(key='AIzaSyAdei6Vw8htMttA3ddXZgJDVKWTjmLX4Ag')
 
 bp = Blueprint('trip', __name__)
 

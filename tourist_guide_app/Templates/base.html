@@ -8,6 +8,8 @@
       <li><span>{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     <li><a href="{{ url_for('list.plan', user_id=g.user['id']) }}">My Plan</a>
+    <li><a href="{{ url_for('list.rank', user_id=g.user['id']) }}">My Rankings</a>
+    <li><a href="{{ url_for('list.index', user_id=g.user['id']) }}">Home</a>
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>
       <li><a href="{{ url_for('auth.login') }}">Log In</a>

@@ -4,10 +4,9 @@
   <h1>{% block title %}My Plan{% endblock %}
 {% endblock %}
 {% block content %}
-    <form action="{{ url_for('list.clear', user_id=g.user['id']) }}" method="post">
+    <form action="{{ url_for('list.clear_plan', user_id=g.user['id']) }}" method="post">
     <input class="danger" type="submit" value="Delete plan">
   </form>
-    <a href="{{ url_for('list.index') }}">Back</a>
       <a href="{{ url_for('trip.map', user_id=g.user['id'], mode='walking') }}">Generate Route</a>
     </h1>
   {% for attraction in attractions %}
@@ -17,7 +16,7 @@
           <h1>{{ attraction['name'] }}</h1>
           <div class="description">
             location: {{ attraction['location'] }} <br>
-            <form action="{{ url_for('list.clear_single', user_id=g.user['id'], user_attraction_id=attraction['user_attraction_id']) }}" method="post">
+            <form action="{{ url_for('list.clear_single_plan', user_id=g.user['id'], user_attraction_id=attraction['user_attraction_id']) }}" method="post">
     <input type="submit" value="Delete Attraction">
 </form>
             </div>
