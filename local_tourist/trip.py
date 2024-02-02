@@ -5,10 +5,10 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from .auth import login_required
-from .db import get_db
-from .algorithms import bubble_sort_attractions
-from .algorithms import tsp_attractions
+from local_tourist.auth import login_required
+from local_tourist.db import get_db
+from local_tourist.algorithms import bubble_sort_attractions
+from local_tourist.algorithms import tsp_attractions
 import sys
 import googlemaps
 
