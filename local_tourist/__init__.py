@@ -35,8 +35,8 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    from . import list
-    app.register_blueprint(list.bp)
+    from . import lists
+    app.register_blueprint(lists.bp)
     app.add_url_rule('/', endpoint='index')
 
     from . import trip

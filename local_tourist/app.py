@@ -1,5 +1,5 @@
 from flask import Flask
-from list import index
+from lists import index
 
 app = Flask(__name__)
 
