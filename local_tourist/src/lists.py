@@ -3,12 +3,18 @@ import json
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, get_flashed_messages
 )
-from werkzeug.exceptions import abort
+# from werkzeug.exceptions import abort
 
-from local_tourist.auth import login_required
-from local_tourist.db import get_db
-from local_tourist.algorithms import bubble_sort_attractions
-import sys
+# from local_tourist.auth import login_required
+# from local_tourist.db import get_db
+# from local_tourist.algorithms import bubble_sort_attractions
+
+from .auth import login_required
+from .db import get_db
+from .algorithms import bubble_sort_attractions
+
+# import sys
+
 
 bp = Blueprint('list', __name__)
 
@@ -86,7 +92,7 @@ def plan(user_id):
         if (db.execute(
                 "SELECT user_attraction_id "
                 "FROM user_attractions_{user_id} "
-                "WHERE attraction_id={attraction_id}".format(user_id=user_id, attraction_id=1)
+                "WHERE user_attraction_id={attraction_id}".format(user_id=user_id, attraction_id=1)
         ).fetchone() is None):
             flash('You having nothing planned.')
             return render_template('list/plan.html')
@@ -150,15 +156,15 @@ def add_to_rank(user_id, attraction_id):
 
     if user_rank_db_exists(user_id):
 
-        if (db.execute(
-                "SELECT attraction_id "
-                "FROM user_attractions_rank_{user_id} "
-                "WHERE attraction_id={attraction_id};".format(user_id = user_id, attraction_id = 1)
-        ).fetchone() is not None):
+        # if (db.execute(
+        #         "SELECT attraction_id "
+        #         "FROM user_attractions_rank_{user_id} "
+        #         "WHERE user_attraction_id={user_attraction_id};".format(user_id = user_id, user_attraction_id = 1)
+        # ).fetchone() is not None):
             # Add the attraction to the user's trip in the user_attractions table
             db.execute(
-                'INSERT INTO user_attractions_rank_{} (user_attraction_rank, attraction_id) VALUES (?, ?)',
-                (user_attraction_rank, attraction_id,).format(user_id)
+                f'INSERT INTO user_attractions_rank_{user_id} (user_attraction_rank, attraction_id) VALUES (?, ?)',
+                (user_attraction_rank, attraction_id,)
             )
             db.commit()
 
@@ -173,8 +179,51 @@ def add_to_rank(user_id, attraction_id):
         )
     db.commit()
 
+    db.execute(
+        f'INSERT INTO user_attractions_rank_{user_id} (user_attraction_rank, attraction_id) VALUES (?, ?)',
+        (user_attraction_rank, attraction_id,)
+    )
+    db.commit()
+
     # return redirect(url_for('list.add_to_rank', user_id=user_id, attractions=attractions))
     return redirect(url_for('index'))
+
+
+# @bp.route('/GET_rank/<int:user_id>/<list:ranked_list>/<int:attraction_id>', methods=['GET'])
+# def GET_rank():
+#     db = get_db()
+#     to_rank = db.execute(
+#         'SELECT name '
+#         'FROM attractions '
+#         'WHERE attractionID = {}'.format(attraction_id)
+#     ).fetchone()
+#
+#     mid = len(ranked_list) // 2
+#     return render_template('list/POST_rank.html', user_id=user_id, ranked_list=ranked_list, mid_index=mid, to_rank=to_rank)
+#
+# @bp.route('/POST_rank/<int:user_id>/<list:ranked_list/to_rank>', methods=['POST'])
+# def POST_rank():
+#     direction = request.form['direction']
+#     if left > right:
+#         ranked_list.insert(left, to_rank)
+#         return redirect(url_for('list.rank', user_id=user_id))
+#     else:
+#         mid = (left + right) // 2
+#
+#         db = get_db()
+#         mid_place = db.execute(
+#             'SELECT name '
+#             'FROM attractions '
+#             'WHERE attractionID = {}'.format(mid)
+#         ).fetchone()
+#
+#         if direction == mid_place:
+#
+#             ranked_list = ranked_list[:mid]
+#         else:
+#             ranked_list = ranked_list[mid:]
+#         return redirect(url_for('list.GET_rank', user_id=user_id, ranked_list=ranked_list, left=left, right=right))
+
 
 
 @bp.route('/clear_rank/<int:user_id>', methods=('POST',))

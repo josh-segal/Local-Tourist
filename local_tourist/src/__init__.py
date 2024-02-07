@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+# from lists import index
 
 
 def create_app(test_config=None):
@@ -25,9 +26,9 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # @app.route('/hello')
+    # def hello():
+    #     return index()
 
     from . import db
     db.init_app(app)
@@ -41,6 +42,6 @@ def create_app(test_config=None):
 
     from . import trip
     app.register_blueprint(trip.bp)
-    app.add_url_rule('/', endpoint='trip')
+    # app.add_url_rule('/', endpoint='trip')
 
     return app

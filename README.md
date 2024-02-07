@@ -10,8 +10,9 @@ The "Local Tourist" project aims to provide users with personalized sorting of a
 - Attractions ranking functionality, allowing users to intuitively rank attractions they have visited.
 
 ## Installation
-No installation is required. The project is accessible on the internet through its deployment on Google Cloud Platform (GCP) web service:
-<br> https://tourist-412606.uk.r.appspot.com.
+This project is on track for cloud deployment but currently only locally accessible. Here is a demo video of the project:
+
+<br>
 
 ## Configuration
 All configurations are managed through Google Cloud Platform (GCP).
