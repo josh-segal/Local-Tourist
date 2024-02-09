@@ -21,36 +21,54 @@ bp = Blueprint('list', __name__)
 
 @bp.route('/')
 def index():
-    if g.user is not None:
-        db = get_db()
-        attractions = db.execute(
-            'SELECT * '
-            ' FROM attractions '
-            ' ORDER BY attractionID'
-        ).fetchall()
-        preferences = db.execute('''
-        SELECT 
-            json_extract(preferences, '$.culture') AS culture_score,
-            json_extract(preferences, '$.history') AS historic_score,
-            json_extract(preferences, '$.food') AS food_score,
-            json_extract(preferences, '$.scenic') AS scenic_score
-        FROM user
-        ''').fetchall()
+    # if g.user is not None:
+    #     db = get_db()
+    #     attractions = db.execute(
+    #         'SELECT * '
+    #         ' FROM attractions '
+    #         ' ORDER BY attractionID'
+    #     ).fetchall()
+    #     preferences = db.execute('''
+    #     SELECT
+    #         json_extract(preferences, '$.culture') AS culture_score,
+    #         json_extract(preferences, '$.history') AS historic_score,
+    #         json_extract(preferences, '$.food') AS food_score,
+    #         json_extract(preferences, '$.scenic') AS scenic_score
+    #     FROM user
+    #     ''').fetchall()
+    #
+    #     user_preferences = []
+    #     for row in preferences:
+    #         user_preferences.append(int(row[0]))
+    #     attractions_sorted = bubble_sort_attractions(attractions, user_preferences)
+    #
+    #     return render_template('list/index.html', attractions=attractions_sorted)
+    # else:
+    #     db = get_db()
+    #     attractions = db.execute(
+    #         'SELECT * '
+    #         ' FROM attractions '
+    #         ' ORDER BY attractionID'
+    #     ).fetchall()
+    #     return render_template('list/index.html', attractions=attractions)
+    db = get_db()
+    # Reference the document in the "attractions" collection with ID "1"
+    doc_ref = db.collection('attractions').document('1')
 
-        user_preferences = []
-        for row in preferences:
-            user_preferences.append(int(row[0]))
-        attractions_sorted = bubble_sort_attractions(attractions, user_preferences)
+    # Get the document snapshot
+    doc_snapshot = doc_ref.get()
 
-        return render_template('list/index.html', attractions=attractions_sorted)
+    # Check if the document exists
+    if doc_snapshot.exists:
+        # Access the data and retrieve the value of the "name" field
+        data = doc_snapshot.to_dict()
+        if "name" in data:
+            name = data["name"]
+            return name
+        else:
+            return "The 'name' field does not exist in document 1."
     else:
-        db = get_db()
-        attractions = db.execute(
-            'SELECT * '
-            ' FROM attractions '
-            ' ORDER BY attractionID'
-        ).fetchall()
-        return render_template('list/index.html', attractions=attractions)
+        return "Document 1 does not exist."
 
 
 @bp.route('/add_to_trip/<int:user_id>/<int:attraction_id>', methods=['POST'])

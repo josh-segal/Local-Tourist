@@ -17,7 +17,10 @@ from .algorithms import tsp_attractions
 import sys
 import googlemaps
 
-gmaps = googlemaps.Client(key='AIzaSyAdei6Vw8htMttA3ddXZgJDVKWTjmLX4Ag')
+file = open('src/key.txt', 'r')
+api_key = file.read()
+file.close()
+gmaps = googlemaps.Client(key=api_key)  # read in key.txt
 
 bp = Blueprint('trip', __name__)
 
@@ -30,7 +33,7 @@ def map(user_id, mode):
         'FROM attractions '
         f'INNER JOIN user_attractions_{user_id} '
         f'ON attractions.attractionID = user_attractions_{user_id}.attraction_id'
-        ).fetchall()
+    ).fetchall()
 
     distance_matrix = []
     lat = 'latitude'
@@ -40,7 +43,8 @@ def map(user_id, mode):
         for j, dest in enumerate(attractions):
             origin = (orgn[lat], orgn[lng])
             destination = (dest[lat], dest[lng])
-            distance_duration = gmaps.distance_matrix(origin, destination, mode=mode)["rows"][0]["elements"][0]["distance"]["value"]
+            distance_duration = \
+            gmaps.distance_matrix(origin, destination, mode=mode)["rows"][0]["elements"][0]["distance"]["value"]
             distance_duration_row.append(distance_duration)
         distance_matrix.append(distance_duration_row)
 
@@ -48,4 +52,3 @@ def map(user_id, mode):
     attractions_optimal_order = [attractions[i] for i in optimal_path]
 
     return render_template('trip/map.html', path=optimal_path, attractions=attractions_optimal_order)
-

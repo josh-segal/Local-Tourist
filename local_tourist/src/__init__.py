@@ -2,14 +2,19 @@ import os
 
 from flask import Flask
 # from lists import index
+import firebase_admin
+from firebase_admin import credentials
 
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+
+    cred = credentials.Certificate("src/key.json")
+    firebase_admin.initialize_app(cred)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'attractions.sqlite'),
+        # DATABASE=os.path.join(app.instance_path, 'attractions.sqlite'),
     )
 
     if test_config is None:
@@ -42,6 +47,6 @@ def create_app(test_config=None):
 
     from . import trip
     app.register_blueprint(trip.bp)
-    # app.add_url_rule('/', endpoint='trip')
+    app.add_url_rule('/', endpoint='trip')
 
     return app
