@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}List of Attractions{% endblock %}!!!!!!</h1>
+  <h1>{% block title %}List of Attractions{% endblock %}</h1>
 {% endblock %}
 {% block content %}
   {% for attraction in attractions %}
@@ -13,14 +13,6 @@
             location: {{ attraction['location'] }} <br>
             </div>
         </div>
-        {% if g.user %}
-    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user['id'], attraction_id=attraction['attractionID']) }}">
-        <button type="submit" class="action">Add to plan</button>
-    </form>
-        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user['id'], attraction_id=attraction['attractionID']) }}">
-        <button type="submit" class="action">Rank item</button>
-    </form>
-        {% endif %}
       </header>
       <p class="body"> </p>
     </article>
@@ -29,3 +21,13 @@
     {% endif %}
   {% endfor %}
 {% endblock %}
+
+
+<!--        {% if g.user %}-->
+<!--    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user['id'], attraction_id=attraction['attractionID']) }}">-->
+<!--        <button type="submit" class="action">Add to plan</button>-->
+<!--    </form>-->
+<!--        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user['id'], attraction_id=attraction['attractionID']) }}">-->
+<!--        <button type="submit" class="action">Rank item</button>-->
+<!--    </form>-->
+<!--        {% endif %}-->

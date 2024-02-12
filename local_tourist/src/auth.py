@@ -9,7 +9,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # from local_tourist.db import get_db
 from .db import get_db
 
-
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
@@ -37,21 +36,34 @@ def register():
         elif not password:
             error = 'Password is required.'
 
-        if error is None:
-            try:
-                db.execute(
-                    "INSERT INTO user (username, password, preferences) VALUES (?, ?, ?)",
-                    (username, generate_password_hash(password), json.dumps(preferences)),
-                )
-                db.commit()
-            except db.IntegrityError:
-                error = f"User {username} is already registered."
-            else:
-                return redirect(url_for("auth.login"))
+        doc_ref = db.collection('users').document(username)
+        doc = doc_ref.get()
+        if error is None and not doc.exists:
+            user_data = {
+                "username": username,
+                "password": generate_password_hash(password),
+                "preferences": preferences
+            }
+            db.collection('users').document(username).set(user_data)
+            return redirect(url_for("auth.login"))
+        else:
+            error = f"User {username} is already registered."
 
         flash(error)
-
     return render_template('auth/register.html')
+
+        #     try:
+        #         db.execute(
+        #             "INSERT INTO user (username, password, preferences) VALUES (?, ?, ?)",
+        #             (username, generate_password_hash(password), json.dumps(preferences)),
+        #         )
+        #         db.commit()
+        #     except db.IntegrityError:
+        #         error = f"User {username} is already registered."
+        #     else:
+        #         return redirect(url_for("auth.login"))
+        #
+        # flash(error)
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -61,23 +73,39 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+        doc_ref = db.collection('users').document(username)
+        doc = doc_ref.get()
+        # user = db.execute(
+        #     'SELECT * FROM user WHERE username = ?', (username,)
+        # ).fetchone()
 
-        if user is None:
+        if not doc.exists:
             error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
+        elif not check_password_hash(doc.get('password'), password):
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
+            session['user_id'] = doc.get('username')
             return redirect(url_for('index'))
 
         flash(error)
 
     return render_template('auth/login.html')
+
+    #     if user is None:
+    #         error = 'Incorrect username.'
+    #     elif not check_password_hash(user['password'], password):
+    #         error = 'Incorrect password.'
+    #
+    #     if error is None:
+    #         session.clear()
+    #         session['user_id'] = user['id']
+    #         return redirect(url_for('index'))
+    #
+    #     flash(error)
+    #
+    # return render_template('auth/login.html')
 
 
 @bp.before_app_request
@@ -86,6 +114,11 @@ def load_logged_in_user():
 
     if user_id is None:
         g.user = None
+    else:
+        db = get_db()
+        user_doc = db.collection('users').document(user_id)
+        user = user_doc.get()
+        g.user = user.get('username')
     # else:
     #     g.user = get_db().execute(
     #         'SELECT * FROM user WHERE id = ?', (user_id,)

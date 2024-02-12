@@ -1,4 +1,5 @@
 def bubble_sort_attractions(attractions, user_preferences):
+    # TODO: CHANGE TO MERGE SORT
     n = len(attractions)
     swapped = False
 

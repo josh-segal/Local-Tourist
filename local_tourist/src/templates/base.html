@@ -5,7 +5,7 @@
   <h1>Local Tourist</h1>
   <ul>
     {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
+      <li><span>{{ g.user }}</span>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     <li><a href="{{ url_for('list.plan', user_id=g.user['id']) }}">My Plan</a>
     <li><a href="{{ url_for('list.rank', user_id=g.user['id']) }}">My Rankings</a>
