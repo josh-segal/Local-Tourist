@@ -45,7 +45,7 @@ def register():
                 "preferences": preferences
             }
             db.collection('users').document(username).set(user_data)
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("index"))
         else:
             error = f"User {username} is already registered."
 
@@ -73,20 +73,20 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
-        doc_ref = db.collection('users').document(username)
-        doc = doc_ref.get()
+        doc_ref = db.collection('users').document(username).get()
+        doc = doc_ref.to_dict()
         # user = db.execute(
         #     'SELECT * FROM user WHERE username = ?', (username,)
         # ).fetchone()
 
-        if not doc.exists:
+        if not doc:
             error = 'Incorrect username.'
-        elif not check_password_hash(doc.get('password'), password):
+        elif not check_password_hash(doc['password'], password):
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = doc.get('username')
+            session['user_id'] = doc['username']
             return redirect(url_for('index'))
 
         flash(error)
@@ -111,14 +111,19 @@ def login():
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
-
-    if user_id is None:
+    db = get_db()
+    user_collection = db.collection('users')
+    user_first = user_collection.limit(1).get()
+    if not user_first:
+        g.user = None
+    elif user_id is None:
         g.user = None
     else:
         db = get_db()
-        user_doc = db.collection('users').document(user_id)
-        user = user_doc.get()
+        user_doc = db.collection('users').document(user_id).get()
+        user = user_doc.to_dict()
         g.user = user.get('username')
+        # g.user = None
     # else:
     #     g.user = get_db().execute(
     #         'SELECT * FROM user WHERE id = ?', (user_id,)

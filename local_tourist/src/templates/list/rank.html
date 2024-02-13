@@ -5,17 +5,17 @@
 {% endblock %}
 {% block content %}
     </h1>
-    <form action="{{ url_for('list.clear_rank', user_id=g.user['id']) }}" method="post">
+    <form action="{{ url_for('list.clear_rank', user_id=g.user) }}" method="post">
     <input class="danger" type="submit" value="Delete rankings">
   </form>
   {% for attraction in attractions %}
     <article class="attraction">
       <header>
         <div>
-          <h1>{{ attraction['name'] }}</h1>
+          <h1>{{ attraction.get().get('name') }}</h1>
           <div class="description">
-            Rank: {{ attraction['user_attraction_rank'] }} <br>
-                        <form action="{{ url_for('list.clear_single_rank', user_id=g.user['id'], user_attraction_rank=attraction['user_attraction_rank']) }}" method="post">
+            Rank: NOT STORED YET {{ attraction.get().get('attractionID') }} <br>
+            <form action="{{ url_for('list.clear_single_rank', user_id=g.user, user_attraction_rank=attraction.get().get('attractionID')) }}" method="post">
     <input type="submit" value="Delete Rank">
 </form>
             </div>
