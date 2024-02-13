@@ -89,18 +89,8 @@ def add_to_trip(user_id, attraction_id):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
     target_doc_ref = db.collection('attractions').document(str(attraction_id))
-    if user_plan_db_exists(user_id):
-        new_field_data = {
-            user_attraction_rank: target_doc_ref
-        }
-        doc_ref.update({
-            'plan': firebase.firestore.ArrayUnion([new_field_data])
-        })
-    else:
-        array_data = [target_doc_ref]
-        doc_ref.update({
-            'plan': array_data
-        })
+    array_data = [target_doc_ref]
+    doc_ref.update({'plan': array_data})
 
     # # Check if the user has an associated user_attractions table
     # db.execute(
@@ -130,22 +120,22 @@ def plan(user_id):
         attractions = db.collection('users').document(user_id)
         plan_doc = attractions.get()
         plan = plan_doc.get('plan')
-    #     attractions = db.execute(
-    #         'SELECT attractions.*, user_attractions_{user_id}.user_attraction_id '
-    #         'FROM attractions '
-    #         'INNER JOIN user_attractions_{user_id} '
-    #         'ON attractions.attractionID = user_attractions_{user_id}.attraction_id'.format(user_id = user_id)
-    #     ).fetchall()
-    #
-    #     if (db.execute(
-    #             "SELECT user_attraction_id "
-    #             "FROM user_attractions_{user_id} "
-    #             "WHERE user_attraction_id={attraction_id}".format(user_id=user_id, attraction_id=1)
-    #     ).fetchone() is None):
-    #         flash('You having nothing planned.')
-    #         return render_template('list/plan.html')
-    #
-    #     # implement sorting with geolocation here ?
+        #     attractions = db.execute(
+        #         'SELECT attractions.*, user_attractions_{user_id}.user_attraction_id '
+        #         'FROM attractions '
+        #         'INNER JOIN user_attractions_{user_id} '
+        #         'ON attractions.attractionID = user_attractions_{user_id}.attraction_id'.format(user_id = user_id)
+        #     ).fetchall()
+        #
+        #     if (db.execute(
+        #             "SELECT user_attraction_id "
+        #             "FROM user_attractions_{user_id} "
+        #             "WHERE user_attraction_id={attraction_id}".format(user_id=user_id, attraction_id=1)
+        #     ).fetchone() is None):
+        #         flash('You having nothing planned.')
+        #         return render_template('list/plan.html')
+        #
+        #     # implement sorting with geolocation here ?
         return render_template('list/plan.html', attractions=plan)
     else:
         flash("You don't have a plan yet.")
@@ -172,7 +162,8 @@ def clear_plan(user_id):
 def clear_single_plan(user_id, user_attraction_id):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
-    doc_ref.update({'plan': firebase.firestore.ArrayRemove(user_attraction_id)})
+    target_doc_ref = db.collection('attractions').document(str(user_attraction_id))
+    doc_ref.update({'plan': firebase.firestore.ArrayRemove([target_doc_ref])})
     # db = get_db()
     # if user_plan_db_exists(user_id):
     #     db.execute(
@@ -191,13 +182,13 @@ def rank(user_id):
         attractions = db.collection('users').document(user_id)
         rank_doc = attractions.get()
         rank = rank_doc.get('rank')
-    #     attractions = db.execute(
-    #         'SELECT attractions.*, user_attractions_rank_{user_id}.user_attraction_rank '
-    #         'FROM attractions '
-    #         'INNER JOIN user_attractions_rank_{user_id} '
-    #         'ON attractions.attractionID = user_attractions_rank_{user_id}.attraction_id'.format(user_id = user_id)
-    #     ).fetchall()
-    #
+        #     attractions = db.execute(
+        #         'SELECT attractions.*, user_attractions_rank_{user_id}.user_attraction_rank '
+        #         'FROM attractions '
+        #         'INNER JOIN user_attractions_rank_{user_id} '
+        #         'ON attractions.attractionID = user_attractions_rank_{user_id}.attraction_id'.format(user_id = user_id)
+        #     ).fetchall()
+        #
         return render_template('list/rank.html', attractions=rank)
 
     else:
@@ -313,7 +304,8 @@ def clear_rank(user_id):
 def clear_single_rank(user_id, user_attraction_rank):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
-    doc_ref.update({'rank': firebase.firestore.ArrayRemove(user_attraction_rank)})
+    target_doc_ref = db.collection('attractions').document(str(user_attraction_rank))
+    doc_ref.update({'rank': firebase.firestore.ArrayRemove([target_doc_ref])})
 
     # if user_rank_db_exists(user_id):
     #     db.execute(
