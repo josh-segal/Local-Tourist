@@ -1,7 +1,7 @@
 # Local Tourist
 
 ## Project Overview
-The "Local Tourist" project aims to provide users with personalized sorting of attractions, optimal routes for visiting attractions, and intuitive attraction ranking capabilities. For me, this project serves as a platform for gaining experience in working with data, algorithms, Python, SQL, the Flask framework, cloud deployment, and REST API connections.
+The "Local Tourist" project aims to provide users with personalized sorting of attractions, optimal routes for visiting attractions, and intuitive attraction ranking capabilities. For me, this project serves as a platform for gaining experience in working with cloud deployment, REST API connections, all things database, algorithms, Python, and the Flask framework.
 
 ### Key Features
 - Personalized sorting of attractions based on user preferences.

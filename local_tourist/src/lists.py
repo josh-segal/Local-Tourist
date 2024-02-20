@@ -25,6 +25,9 @@ def index():
     if g.user is not None:
         db = get_db()
         attractions = db.collection('attractions').stream()
+        attractions_list = []
+        for attraction in attractions:
+            attractions_list.append(attraction.to_dict())
         #     attractions = db.execute(
         #         'SELECT * '
         #         ' FROM attractions '
@@ -33,6 +36,7 @@ def index():
         preferences = db.collection('users').document(g.user)
         pref_doc = preferences.get()
         pref = pref_doc.get('preferences')
+
         #     preferences = db.execute('''
         #     SELECT
         #         json_extract(preferences, '$.culture') AS culture_score,
@@ -48,9 +52,9 @@ def index():
     #     user_preferences = []
     #     for row in preferences:
     #         user_preferences.append(int(row[0]))
-    #     attractions_sorted = bubble_sort_attractions(attractions, user_preferences)
+        attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences)
     #
-    #     return render_template('list/index.html', attractions=attractions_sorted)
+        return render_template('list/index.html', attractions=attractions_sorted)
     else:
         db = get_db()
         attractions = db.collection('attractions').stream()
