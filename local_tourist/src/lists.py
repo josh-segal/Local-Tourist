@@ -49,11 +49,11 @@ def index():
         user_preferences = []
         for key, value in pref.items():
             user_preferences.append(value)
-    #     user_preferences = []
-    #     for row in preferences:
-    #         user_preferences.append(int(row[0]))
+        #     user_preferences = []
+        #     for row in preferences:
+        #         user_preferences.append(int(row[0]))
         attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences)
-    #
+        #
         return render_template('list/index.html', attractions=attractions_sorted)
     else:
         db = get_db()
@@ -202,16 +202,17 @@ def rank(user_id):
 
 @bp.route('/add_to_rank/<string:user_id>/<int:attraction_id>', methods=['POST'])
 def add_to_rank(user_id, attraction_id):
-    user_attraction_rank = 1
+    user_attraction_rank = 1  # TODO: rank implementation needed here
 
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
+    doc = doc_ref.get().to_dict()
     target_doc_ref = db.collection('attractions').document(str(attraction_id))
     if user_rank_db_exists(user_id):
         new_field_data = {
             user_attraction_rank: target_doc_ref
         }
-        doc_ref.update({
+        doc.update({
             'rank': firebase.firestore.ArrayUnion([new_field_data])
         })
     else:
