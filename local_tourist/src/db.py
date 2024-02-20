@@ -1,25 +1,12 @@
-import sqlite3
-
 import click
 from firebase_admin import firestore
-from flask import current_app, g
+from flask import g
 
 
 def get_db():
     if 'db' not in g:
-        # print('DB not in g')
-        # print('---> ', current_app.config['DATABASE'])
-
         g.db = firestore.client()
 
-        # g.db = sqlite3.connect(
-        #     current_app.config['DATABASE'],
-        #     detect_types=sqlite3.PARSE_DECLTYPES
-        # )
-        # g.db.row_factory = sqlite3.Row
-    #     print(g.db.execute('SELECT * from user').fetchone())
-    # else:
-    #     print('db in g')
     return g.db
 
 
@@ -32,9 +19,6 @@ def close_db(e=None):
 
 def init_db():
     db = get_db()
-
-    # with current_app.open_resource('../schema.sql') as f:
-    #     db.executescript(f.read().decode('utf8'))
 
 
 @click.command('init-db')

@@ -52,19 +52,6 @@ def register():
         flash(error)
     return render_template('auth/register.html')
 
-        #     try:
-        #         db.execute(
-        #             "INSERT INTO user (username, password, preferences) VALUES (?, ?, ?)",
-        #             (username, generate_password_hash(password), json.dumps(preferences)),
-        #         )
-        #         db.commit()
-        #     except db.IntegrityError:
-        #         error = f"User {username} is already registered."
-        #     else:
-        #         return redirect(url_for("auth.login"))
-        #
-        # flash(error)
-
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -75,9 +62,6 @@ def login():
         error = None
         doc_ref = db.collection('users').document(username).get()
         doc = doc_ref.to_dict()
-        # user = db.execute(
-        #     'SELECT * FROM user WHERE username = ?', (username,)
-        # ).fetchone()
 
         if not doc:
             error = 'Incorrect username.'
@@ -92,20 +76,6 @@ def login():
         flash(error)
 
     return render_template('auth/login.html')
-
-    #     if user is None:
-    #         error = 'Incorrect username.'
-    #     elif not check_password_hash(user['password'], password):
-    #         error = 'Incorrect password.'
-    #
-    #     if error is None:
-    #         session.clear()
-    #         session['user_id'] = user['id']
-    #         return redirect(url_for('index'))
-    #
-    #     flash(error)
-    #
-    # return render_template('auth/login.html')
 
 
 @bp.before_app_request
@@ -123,11 +93,6 @@ def load_logged_in_user():
         user_doc = db.collection('users').document(user_id).get()
         user = user_doc.to_dict()
         g.user = user.get('username')
-        # g.user = None
-    # else:
-    #     g.user = get_db().execute(
-    #         'SELECT * FROM user WHERE id = ?', (user_id,)
-    #     ).fetchone()
 
 
 @bp.route('/logout')
