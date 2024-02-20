@@ -4,6 +4,12 @@
   <h1>{% block title %}List of Attractions{% endblock %}</h1>
 {% endblock %}
 {% block content %}
+<form method="post" action="{{ url_for('list.change_location', location='Boston') }}">
+        <button type="submit" class="action">Boston, MA</button>
+    </form>
+<form method="post" action="{{ url_for('list.change_location', location='Leuven') }}">
+        <button type="submit" class="action">Leuven, Belgium</button>
+    </form>
   {% for attraction in attractions %}
     <article class="attraction">
       <header>

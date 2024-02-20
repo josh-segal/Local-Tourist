@@ -2,19 +2,20 @@ import json
 
 from firebase_admin import firestore as firebase
 from flask import (
-    Blueprint, flash, g, redirect, render_template, url_for
+    Blueprint, flash, g, redirect, render_template, url_for, session
 )
 
 from .auth import login_required
 from .db import get_db
 from .algorithms import bubble_sort_attractions
 
-
 bp = Blueprint('list', __name__)
 
 
 @bp.route('/')
 def index():
+    if 'location' not in session:
+        session['location'] = "Boston"
     if g.user is not None:
         db = get_db()
         attractions = db.collection('attractions').stream()
@@ -36,9 +37,15 @@ def index():
     return render_template('list/index.html', attractions=attractions)
 
 
+@bp.route('/location/<string:location>', methods=['POST', ])
+def change_location(location):
+    session['location'] = location
+    flash('Location changed to ' + location)
+    return redirect(url_for('index'))
+
+
 @bp.route('/add_to_trip/<string:user_id>/<int:attraction_id>', methods=['POST'])
 def add_to_trip(user_id, attraction_id):
-
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
     target_doc_ref = db.collection('attractions').document(str(attraction_id))
