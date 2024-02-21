@@ -4,7 +4,7 @@ import requests
 import pprint
 
 
-def nearby_search():
+def nearby_search(location):
     file = open('src/key.txt', 'r')
     api_key = file.read()
     file.close()
@@ -34,12 +34,18 @@ def nearby_search():
 
     # Define the URL
     # url = "https://places.googleapis.com/v1/places:searchNearby"
-    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" \
-          "?maxResultCount=5" \
-          "&location=42.3601%2C-71.0589" \
-          "&radius=1500" \
-          "&type=Entertainment and Recreation" \
-          f"&key={api_key}"
+    if location == 'Leuven':
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" \
+              "?location=50.8823%2C-4.7138" \
+              "&rankby=distance" \
+              "&type=Entertainment and Recreation" \
+              f"&key={api_key}"
+    else:
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" \
+              "?location=42.3601%2C-71.0589" \
+              "&radius=1500" \
+              "&type=Entertainment and Recreation" \
+              f"&key={api_key}"
 
     # Send the POST request
     response = requests.post(url)
@@ -65,7 +71,7 @@ def nearby_search():
         attractions_list = []
         for attraction in response_json.get('results', []):
             place_ids.append(attraction.get('place_id', {}))
-            print("attraction: " + attraction.get('place_id', {}))
+            # print("attraction: " + attraction.get('place_id', {}))
         for place_id in place_ids:
             place_details_url = f"https://maps.googleapis.com/maps/api/place/details/json?key={api_key}&place_id={place_id}&fields=name,formatted_address,geometry"
 
@@ -78,6 +84,7 @@ def nearby_search():
                 attraction['lat'] = place_details['result']['geometry']['location']['lat']
                 attraction['lng'] = place_details['result']['geometry']['location']['lng']
                 attractions_list.append(attraction)
+                pprint.pprint(place_details)
 
         return attractions_list
     else:

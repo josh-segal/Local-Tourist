@@ -23,7 +23,8 @@ def index():
         # attractions_list = []
         # for attraction in attractions:
         #     attractions_list.append(attraction.to_dict())
-        attractions = nearby_search()
+        location = session['location']
+        attractions = nearby_search(location)
         # attractions_list = attractions.get('places', [])
         preferences = db.collection('users').document(g.user)
         pref_doc = preferences.get()
