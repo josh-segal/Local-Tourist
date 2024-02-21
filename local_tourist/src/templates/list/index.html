@@ -14,16 +14,16 @@
     <article class="attraction">
       <header>
         <div>
-          <h1>{{ attraction.get('name') }}</h1>
+          <h1>{{ attraction['name'] }}</h1>
           <div class="description">
-            location: {{ attraction.get('location') }} <br>
+            location: {{ attraction['location'] }} <br>
             </div>
         </div>
         {% if g.user %}
-    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction.get('attractionID')) }}">
+    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=1) }}">
         <button type="submit" class="action">Add to plan</button>
     </form>
-        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction.get('attractionID')) }}">
+        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=1) }}">
         <button type="submit" class="action">Rank item</button>
     </form>
         {% endif %}

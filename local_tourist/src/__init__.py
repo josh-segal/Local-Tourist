@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask
-# from lists import index
 import firebase_admin
 from firebase_admin import credentials
 
@@ -14,7 +13,6 @@ def create_app(test_config=None):
     firebase_admin.initialize_app(cred)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        # DATABASE=os.path.join(app.instance_path, 'attractions.sqlite'),
     )
 
     if test_config is None:

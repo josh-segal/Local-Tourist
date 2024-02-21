@@ -8,6 +8,7 @@ from flask import (
 from .auth import login_required
 from .db import get_db
 from .algorithms import bubble_sort_attractions
+from .googlemaps_places import nearby_search
 
 bp = Blueprint('list', __name__)
 
@@ -18,19 +19,21 @@ def index():
         session['location'] = "Boston"
     if g.user is not None:
         db = get_db()
-        attractions = db.collection('attractions').stream()
-        attractions_list = []
-        for attraction in attractions:
-            attractions_list.append(attraction.to_dict())
+        # attractions = db.collection('attractions').stream()
+        # attractions_list = []
+        # for attraction in attractions:
+        #     attractions_list.append(attraction.to_dict())
+        attractions = nearby_search()
+        # attractions_list = attractions.get('places', [])
         preferences = db.collection('users').document(g.user)
         pref_doc = preferences.get()
         pref = pref_doc.get('preferences')
         user_preferences = []
         for key, value in pref.items():
             user_preferences.append(value)
-        attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences)
-        #
-        return render_template('list/index.html', attractions=attractions_sorted)
+        # attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences)
+        # return render_template('list/index.html', attractions=attractions_sorted)
+        return render_template('list/index.html', attractions=attractions)
     else:
         db = get_db()
         attractions = db.collection('attractions').stream()
@@ -44,6 +47,7 @@ def change_location(location):
     return redirect(url_for('index'))
 
 
+# TODO: ADD UNIQUE IDS TO ATTRACTIONS LOOK AT INDEX.HTML ROUTING
 @bp.route('/add_to_trip/<string:user_id>/<int:attraction_id>', methods=['POST'])
 def add_to_trip(user_id, attraction_id):
     db = get_db()
