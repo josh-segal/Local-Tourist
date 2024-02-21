@@ -15,7 +15,7 @@
         <div>
           <h1>{{ attraction.get().get('name') }}</h1>
           <div class="description">
-            location: {{ attraction.get().get('location') }} <br>
+            location: {{  }} <br>
             <form action="{{ url_for('list.clear_single_plan', user_id=g.user, user_attraction_id=attraction.get().get('attractionID')) }}" method="post">
     <input type="submit" value="Delete Attraction">
 </form>
