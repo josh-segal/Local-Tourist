@@ -1,9 +1,38 @@
 {% extends 'base.html' %}
-
 {% block header %}
+{% if g.user %}
+
   <h1>{% block title %}List of Attractions{% endblock %}</h1>
+
+    {% endif %}
+{% if not g.user %}
+
+  <h1>Welcome to Local Tourist</h1>
+    {% endif %}
 {% endblock %}
 {% block content %}
+{% if not g.user %}
+    <p>Explore attractions by registering a new account or optionally using the demo login provided:
+<br> <b>Username</b>: test
+<br> <b>Password</b>: test</p>
+<div>
+                <h1>Search Attractions</h1>
+                <p>Find attractions based on geographical location.</p>
+            </div>
+            <div>
+                <h1>Add to Plan</h1>
+                <p>Add attractions to your travel plan for easy access and organization.</p>
+            </div>
+<div>
+                <h1>Optimize Your Trip</h1>
+                <p>Generate the most efficient routes between attractions in your plan for a seamless travel experience.</p>
+            </div>
+            <div>
+                <h1>Rank Attractions</h1>
+                <p>Rate attractions based on your personal experiences.</p>
+            </div>
+{% endif %}
+{% if g.user %}
 <p>Choose a location to explore:</p>
 <form method="post" action="{{ url_for('list.change_location', location='Boston') }}">
         <button type="submit" class="action">Boston, MA</button>
@@ -11,14 +40,7 @@
 <form method="post" action="{{ url_for('list.change_location', location='Leuven') }}">
         <button type="submit" class="action">Leuven, Belgium</button>
     </form>
-{% if not g.user %}
-    <p>Explore attractions by signing in or creating an account.
-<br> Try our demo login:
-<br> Username: test
-<br> Password: test</p>
-{% endif %}
   {% for attraction in attractions %}
-        {% if g.user %}
 <article class="attraction">
       <header>
         <div>
@@ -40,8 +62,8 @@
     {% if not loop.last %}
       <hr>
 {% endif %}
-    {% endif %}
   {% endfor %}
+    {% endif %}
 {% endblock %}
 
 
