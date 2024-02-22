@@ -12,10 +12,10 @@
     <article class="attraction">
       <header>
         <div>
-          <h1>{{ attraction.get().get('name') }}</h1>
+          <h1> {{ attraction['name'] }}</h1>
           <div class="description">
-            Rank: NOT STORED YET {{ attraction.get().get('attractionID') }} <br>
-            <form action="{{ url_for('list.clear_single_rank', user_id=g.user, user_attraction_rank=attraction.get().get('attractionID')) }}" method="post">
+            Rank: in development...  <br>
+            <form action="{{ url_for('list.clear_single_rank', user_id=g.user, user_attraction_rank=attraction['id'])}}" method="post">
     <input type="submit" value="Delete Rank">
 </form>
             </div>

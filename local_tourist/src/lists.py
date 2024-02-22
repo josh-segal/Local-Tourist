@@ -19,20 +19,15 @@ def index():
         session['location'] = "Boston"
     if g.user is not None:
         db = get_db()
-        # attractions = db.collection('attractions').stream()
-        # attractions_list = []
-        # for attraction in attractions:
-        #     attractions_list.append(attraction.to_dict())
         location = session['location']
         attractions = nearby_search(location)
-        # attractions_list = attractions.get('places', [])
         preferences = db.collection('users').document(g.user)
         pref_doc = preferences.get()
         pref = pref_doc.get('preferences')
         user_preferences = []
         for key, value in pref.items():
             user_preferences.append(value)
-        # attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences)
+        # attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences) TODO: reimplement user pref model with new places data points
         # return render_template('list/index.html', attractions=attractions_sorted)
         return render_template('list/index.html', attractions=attractions)
     else:
@@ -50,11 +45,10 @@ def change_location(location):
 
 # TODO: ADD UNIQUE IDS TO ATTRACTIONS LOOK AT INDEX.HTML ROUTING
 @bp.route(
-    '/add_to_trip/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<float:lat>/<float:lng>',
+    '/add_to_trip/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string:lng>',
     methods=['POST'])
 def add_to_trip(user_id, attraction_id, name, location, lat, lng):
     db = get_db()
-
     collection_ref = db.collection('attractions')
     doc_ref = collection_ref.document(attraction_id)
     doc = doc_ref.get()
@@ -67,13 +61,12 @@ def add_to_trip(user_id, attraction_id, name, location, lat, lng):
         user_doc_ref.update({'plan': new_plan})
 
     else:
-
         data = {
             'name': name,
             'location': location,
-            'latitude': lat,
-            'longitude': lng,
-            'id': attraction_id
+            'latitude': float(lat),
+            'longitude': float(lng),
+            'id': attraction_id,
         }
 
         doc_ref = db.collection('attractions').document(attraction_id)
@@ -118,7 +111,7 @@ def clear_plan(user_id):
 def clear_single_plan(user_id, user_attraction_id):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
-    target_doc_ref = db.collection('attractions').document(str(user_attraction_id))
+    target_doc_ref = db.collection('attractions').document(user_attraction_id).get().to_dict()
     doc_ref.update({'plan': firebase.firestore.ArrayRemove([target_doc_ref])})
     return redirect(url_for('list.plan', user_id=user_id))
 
@@ -128,24 +121,25 @@ def rank(user_id):
     db = get_db()
 
     if user_rank_db_exists(user_id):
-        attractions = db.collection('users').document(user_id)
-        rank_doc = attractions.get()
-        rank = rank_doc.get('rank')
-        return render_template('list/rank.html', attractions=rank)
+        attractions = db.collection('users').document(user_id).get().get('rank')
+        attractions_list = []
+        for attraction in attractions:
+            attractions_list.append(attraction.get().to_dict())
+        return render_template('list/rank.html', attractions=attractions_list)
 
     else:
         flash("You don't have any rankings yet.")
     return redirect(url_for('index'))
 
 
-@bp.route('/add_to_rank/<string:user_id>/<int:attraction_id>', methods=['POST'])
+@bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>', methods=['POST'])
 def add_to_rank(user_id, attraction_id):
     user_attraction_rank = 1  # TODO: rank implementation needed here
 
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
     doc = doc_ref.get().to_dict()
-    target_doc_ref = db.collection('attractions').document(str(attraction_id))
+    target_doc_ref = db.collection('attractions').document(attraction_id)
     if user_rank_db_exists(user_id):
         new_field_data = {
             user_attraction_rank: target_doc_ref
@@ -207,12 +201,12 @@ def clear_rank(user_id):
     return redirect(url_for('index'))
 
 
-@bp.route('/clear_single_rank/<string:user_id>/<int:user_attraction_rank>', methods=('POST',))
+@bp.route('/clear_single_rank/<string:user_id>/<string:user_attraction_rank>', methods=('POST',))
 @login_required
 def clear_single_rank(user_id, user_attraction_rank):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
-    target_doc_ref = db.collection('attractions').document(str(user_attraction_rank))
+    target_doc_ref = db.collection('attractions').document(user_attraction_rank)
     doc_ref.update({'rank': firebase.firestore.ArrayRemove([target_doc_ref])})
     return redirect(url_for('list.rank', user_id=user_id))
 
