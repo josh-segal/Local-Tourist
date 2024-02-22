@@ -4,14 +4,22 @@
   <h1>{% block title %}List of Attractions{% endblock %}</h1>
 {% endblock %}
 {% block content %}
+<p>Choose a location to explore:</p>
 <form method="post" action="{{ url_for('list.change_location', location='Boston') }}">
         <button type="submit" class="action">Boston, MA</button>
     </form>
 <form method="post" action="{{ url_for('list.change_location', location='Leuven') }}">
         <button type="submit" class="action">Leuven, Belgium</button>
     </form>
+{% if not g.user %}
+    <p>Explore attractions by signing in or creating an account.
+<br> Try our demo login:
+<br> Username: test
+<br> Password: test</p>
+{% endif %}
   {% for attraction in attractions %}
-    <article class="attraction">
+        {% if g.user %}
+<article class="attraction">
       <header>
         <div>
           <h1>{{ attraction['name'] }}</h1>
@@ -19,19 +27,19 @@
             location: {{ attraction['vicinity'] }} <br>
             </div>
         </div>
-        {% if g.user %}
     <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity'], lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
         <button type="submit" class="action">Add to plan</button>
     </form>
         <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id']) }}">
         <button type="submit" class="action">Rank item</button>
     </form>
-        {% endif %}
+
       </header>
       <p class="body"> </p>
     </article>
     {% if not loop.last %}
       <hr>
+{% endif %}
     {% endif %}
   {% endfor %}
 {% endblock %}
