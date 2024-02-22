@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Which place did you enjoy more? {% endblock %}
+{% endblock %}
+{% block content %} </h1>
+<form method="post" action="{{ url_for('list.GET_rank', user_id=g.user, attraction_id=attraction_id, name=name, location=location, lat=lat, lng=lng, leftIdx=((leftIdx+rightIdx) // 2), rightIdx=rightIdx, first_zero_comp=first_zero_comp) }}">
+        <button type="submit" class="action">{{ranked_list[((leftIdx+rightIdx) // 2)].get('name')}}</button>
+    </form>
+<form method="post" action="{{ url_for('list.GET_rank', user_id=g.user, attraction_id=attraction_id, name=name, location=location, lat=lat, lng=lng, leftIdx=leftIdx, rightIdx=((leftIdx+rightIdx) // 2), first_zero_comp=first_zero_comp) }}">
+        <button type="submit" class="action">{{name}}</button>
+    </form>
+
+{% endblock %}

@@ -30,7 +30,7 @@
     <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity'], lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
         <button type="submit" class="action">Add to plan</button>
     </form>
-        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id']) }}">
+        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity'], lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
         <button type="submit" class="action">Rank item</button>
     </form>
 

@@ -14,8 +14,8 @@
         <div>
           <h1> {{ attraction['name'] }}</h1>
           <div class="description">
-            Rank: in development...  <br>
-            <form action="{{ url_for('list.clear_single_rank', user_id=g.user, user_attraction_rank=attraction['id'])}}" method="post">
+            Rank: {{ loop.index }}  <br>
+            <form action="{{ url_for('list.clear_single_rank', user_id=g.user, to_remove = loop.index - 1)}}" method="post">
     <input type="submit" value="Delete Rank">
 </form>
             </div>
