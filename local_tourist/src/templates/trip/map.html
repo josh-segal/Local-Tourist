@@ -16,7 +16,7 @@
 <body>
     <div id="map"></div>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdei6Vw8htMttA3ddXZgJDVKWTjmLX4Ag&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-DEXrHq9jI0lC8k1-dxbk8ZVxvt5gtRE&callback=initMap&loading=async"></script>
 
     <script>
 
@@ -38,7 +38,7 @@
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: attractionsArray[0].lat, lng: attractionsArray[0].lng},
-                zoom: 9
+                zoom: 12
             });
 
                        // Add markers for attractions
