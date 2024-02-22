@@ -49,13 +49,42 @@ def change_location(location):
 
 
 # TODO: ADD UNIQUE IDS TO ATTRACTIONS LOOK AT INDEX.HTML ROUTING
-@bp.route('/add_to_trip/<string:user_id>/<int:attraction_id>', methods=['POST'])
-def add_to_trip(user_id, attraction_id):
+@bp.route(
+    '/add_to_trip/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<float:lat>/<float:lng>',
+    methods=['POST'])
+def add_to_trip(user_id, attraction_id, name, location, lat, lng):
     db = get_db()
-    doc_ref = db.collection('users').document(user_id)
-    target_doc_ref = db.collection('attractions').document(str(attraction_id))
-    array_data = [target_doc_ref]
-    doc_ref.update({'plan': array_data})
+
+    collection_ref = db.collection('attractions')
+    doc_ref = collection_ref.document(attraction_id)
+    doc = doc_ref.get()
+
+    if doc.exists:
+        user_doc_ref = db.collection('users').document(user_id)
+        attraction = doc.to_dict()
+        current_plan = user_doc_ref.get().to_dict().get('plan', [])
+        new_plan = current_plan + [attraction]
+        user_doc_ref.update({'plan': new_plan})
+
+    else:
+
+        data = {
+            'name': name,
+            'location': location,
+            'latitude': lat,
+            'longitude': lng,
+            'id': attraction_id
+        }
+
+        doc_ref = db.collection('attractions').document(attraction_id)
+        doc_ref.set(data)
+
+        user_doc_ref = db.collection('users').document(user_id)
+        new_attraction = collection_ref.document(attraction_id)
+        attraction = new_attraction.get().to_dict()
+        current_plan = user_doc_ref.get().to_dict().get('plan', [])
+        new_plan = current_plan + [attraction]
+        user_doc_ref.update({'plan': new_plan})
 
     flash('Attraction added to your trip successfully.')
     return redirect(url_for('index'))
@@ -84,7 +113,7 @@ def clear_plan(user_id):
     return redirect(url_for('index'))
 
 
-@bp.route('/clear_single_plan/<string:user_id>/<int:user_attraction_id>', methods=('POST',))
+@bp.route('/clear_single_plan/<string:user_id>/<string:user_attraction_id>', methods=('POST',))
 @login_required
 def clear_single_plan(user_id, user_attraction_id):
     db = get_db()

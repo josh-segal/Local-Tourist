@@ -1,9 +1,6 @@
-import json
-
 from flask import (
     Blueprint, render_template
 )
-from googlemaps import distance_matrix
 
 from .db import get_db
 from .algorithms import tsp_attractions
@@ -27,16 +24,18 @@ def map(user_id, mode):
     plan = plan_data['plan']
     lat = 'latitude'
     lng = 'longitude'
+    user_distance_matrix = []
     for i, orgn in enumerate(plan):
         distance_duration_row = []
         for j, dest in enumerate(plan):
             origin = (orgn[lat], orgn[lng])
             destination = (dest[lat], dest[lng])
-            distance_duration = gmaps.distance_matrix(origin, destination, mode=mode)["rows"][0]["elements"][0]["distance"]["value"]
+            distance_duration = \
+                gmaps.distance_matrix(origin, destination, mode=mode)["rows"][0]["elements"][0]["distance"]["value"]
             distance_duration_row.append(distance_duration)
-        distance_matrix.append(distance_duration_row)
+        user_distance_matrix.append(distance_duration_row)
 
-    optimal_distance, optimal_path = tsp_attractions(distance_matrix)
+    optimal_distance, optimal_path = tsp_attractions(user_distance_matrix)
     attractions_optimal_order = [plan[i] for i in optimal_path]
 
     return render_template('trip/map.html', path=optimal_path, attractions=attractions_optimal_order)
