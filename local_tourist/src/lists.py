@@ -39,6 +39,8 @@ def index():
 @bp.route('/location/<string:location>', methods=['POST', ])
 def change_location(location):
     session['location'] = location
+    user_id = g.user
+    clear_plan(user_id)
     flash('Location changed to ' + location)
     return redirect(url_for('index'))
 
@@ -98,7 +100,6 @@ def plan(user_id):
 
 
 @bp.route('/clear_plan/<string:user_id>', methods=('POST',))
-@login_required
 def clear_plan(user_id):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
