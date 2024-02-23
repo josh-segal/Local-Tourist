@@ -260,19 +260,19 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
     }
 
     if leftIdx == mid == 0:
-        print("swapping")
-        print("zero before: ", first_zero_comp)
+        # print("swapping")
+        # print("zero before: ", first_zero_comp)
         if first_zero_comp == 1:
-            print("swapping to 0")
+            # print("swapping to 0")
             first_zero_comp = 0
         else:
-            print("swapping to 1")
+            # print("swapping to 1")
             first_zero_comp = 1
     print("zero after: ", first_zero_comp)
-    # print("mid: ", mid)
-    # print("left: ", leftIdx)
-    # print("right: ", rightIdx)
-    # print("zero: ", first_zero_comp)
+    print("mid: ", mid)
+    print("left: ", leftIdx)
+    print("right: ", rightIdx)
+    print("zero: ", first_zero_comp)
 
     if leftIdx >= rightIdx:
         new_ranked_list = ranked_list[:leftIdx] + [data] + ranked_list[leftIdx:]
@@ -281,8 +281,13 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
         # attractions.update({'rank': new_ranked_list})
         return redirect(url_for('list.rank', user_id=user_id))
 
-    elif leftIdx == mid and not first_zero_comp:
+    elif leftIdx == mid and not first_zero_comp and len(ranked_list) > 1:
         # Insert data at leftIdx
+        new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
+        attractions.update({'rank': new_ranked_list})
+        return redirect(url_for('list.rank', user_id=user_id))
+
+    elif leftIdx == mid and first_zero_comp and len(ranked_list) == 1:
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
         return redirect(url_for('list.rank', user_id=user_id))
