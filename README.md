@@ -4,14 +4,16 @@
 The "Local Tourist" project aims to provide users with personalized sorting of attractions, optimal routes for visiting attractions, and intuitive attraction ranking capabilities. For me, this project serves as a platform for gaining experience in working with cloud deployment, REST API connections, all things database, algorithms, Python, and the Flask framework.
 
 ### Key Features
-- Personalized sorting of attractions based on user preferences.
+- Attraction searching based on geographical locations.
 - Creation and modification of personalized plans for visiting attractions.
-- Generation of optimal routes through the Google Maps API. <br> *CURRENTLY UNAVAILABLE DURING DATABASE MIGRATION
+- Intuitive personal ranking list for attractions user has been to.
+- Generation of optimal trip routes through the Google Maps API. <br>
 
 
 ## Roadmap
 These features are planned implementations in future builds:
-- Attractions ranking functionality, allowing users to intuitively rank attractions they have visited.
+- Personalized sorting of attractions based on user preferences. --> Reworking with new data after database migration
+- ~~Attractions ranking functionality, allowing users to intuitively rank attractions they have visited.~~ **Implemented**
 - Group creation and group trip planning
 - AI NLP solution to suggest plans and attractions with automated feature engineering
 - Robust testing framework
@@ -19,7 +21,7 @@ These features are planned implementations in future builds:
 ## Installation
 This project is deployed via Google App Engine and can be accessed through this link:
 <br> https://tourist-412606.uk.r.appspot.com
-<br> A demo login is username: "test", password: "test," or you may register your own profile for the full experience. Please note that some features are unavailable as I migrate the database and update items from the roadmap that have unintended side effect tasks. 
+<br> A demo login is username: "test", password: "test," or you may register your own profile for the full experience. 
 
 
 ## Configuration
