@@ -14,7 +14,7 @@ body {
 }
 
 .top-bar {
-    width: 100%;
+    width: 100vw;
     height: 8%;
     display: flex;
     position: absolute;
@@ -30,7 +30,9 @@ body {
 }
 
 .top-bar-button {
-    margin-right: 3%;
+    width: 7.5vw;
+    text-align: center;
+    margin-right: 1vw;
     border-radius: 8px;
     border-style: none;
     box-sizing: border-box;
@@ -38,7 +40,7 @@ body {
     flex-shrink: 0;
     font-family: 'Coolvetica', sans-serif;
     letter-spacing: 0.1rem;
-    font-size: 16px;
+    font-size: 0.8vw;
     font-weight: 600;
     padding: 0 1.6rem;
     text-align: center;
@@ -60,12 +62,16 @@ body {
     background-image: linear-gradient(92.88deg, #2FD2A4, #42f4af);
 }
 
+.b-learn-more {
+    width: 12vw;
+}
+
 .b-login:hover {
     box-shadow: rgba(221, 221, 221, 0.2) 0 1px 30px;
     transition-duration: .1s;
   }
 
-.b-register:hover {
+.b-register:hover, .b-learn-more {
   box-shadow: rgba(66, 244, 175, 0.2) 0 1px 30px;
   transition-duration: .1s;
 }
@@ -83,14 +89,14 @@ body {
 
 #logo {
     align-self: center;
-    width: 3%;
+    width: 3vw;
     margin-left: 2%;
     margin-top: 0.5%;
 }
 
 #wordmark {
     align-self: center;
-    width: 10%;
+    width: 10vw;
     margin-top: 0.2%;
     margin-left: 0.4%;
     margin-right: 67vw;
@@ -148,7 +154,8 @@ body {
   }
 
 .desc {
-    font-family: serif;
+    font-family: 'Coolvetica', sans-serif;
+    letter-spacing: 0.1rem;
     margin-top: 2vw;
     font-size: 1vw;
     padding: 2vw;
@@ -185,6 +192,7 @@ body {
     justify-content: center;
     display: flex;
     padding-left: 3vw;
+    font-family: 'Coolvetica', sans-serif;
 }
 
 .icon-div {
@@ -208,6 +216,7 @@ body {
     width: 100%;
     margin-bottom: 1vw;
     font-size: 1.5vw;
+    letter-spacing: 0.1rem;
 }
 
 .icon-wrapper p {
