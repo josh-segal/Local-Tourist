@@ -26,7 +26,9 @@
     <div class="caption">
       <h2>Travel like a local.</h2>
       <div class="desc">This project is still in development. For the most up-to-date documentation and code check the
-        <a href="https://github.com/josh-segal/Local-Tourist">GitHub repository.</a></div>
+        <a href="https://github.com/josh-segal/Local-Tourist">GitHub repository</a>.
+          Explore attractions by registering a new account or optionally using the demo login "test" with password "test".
+        </a></div>
       <button type="button" class="top-bar-button b-learn-more"
         onclick=window.location.href="{{ url_for('auth.register') }}">Learn More</button>
     </div>
@@ -40,32 +42,30 @@
     <h1>{% block title %}List of Attractions{% endblock %}</h1>
 
     {% endif %}
-    {% if not g.user %}
-
-    <h1 id="welcome">Welcome to Local Tourist</h1>
-    {% endif %}
     {% endblock %}
     {% block content %}
     {% if not g.user %}
-    <p>Explore attractions by registering a new account or optionally using the demo login provided:
-      <br> <b>Username</b>: test
-      <br> <b>Password</b>: test
-    </p>
-    <div>
-      <h1>Search Attractions</h1>
-      <p>Find attractions based on geographical location.</p>
-    </div>
-    <div>
-      <h1>Add to Plan</h1>
-      <p>Add attractions to your travel plan for easy access and organization.</p>
-    </div>
-    <div>
-      <h1>Optimize Your Trip</h1>
-      <p>Generate the most efficient routes between attractions in your plan for a seamless travel experience.</p>
-    </div>
-    <div>
-      <h1>Rank Attractions</h1>
-      <p>Rate attractions based on your personal experiences.</p>
+    <div class="icon-wrapper">
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon1.png') }}">
+        <h1>Search Attractions</h1>
+        <p>Find attractions based on geographical location.</p>
+      </div>
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon2.png') }}">
+        <h1>Add to Plan</h1>
+        <p>Add attractions to your travel plan for easy access and organization.</p>
+      </div>
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon3.png') }}">
+        <h1>Optimize Your Trip</h1>
+        <p>Generate the most efficient routes between attractions in your plan for a seamless travel experience.</p>
+      </div>
+      <div class='icon-div'>
+        <img class='front-icon'src="{{ url_for('static', filename='icon4.png') }}">
+        <h1>Rank Attractions</h1>
+        <p>Rate attractions based on your personal experiences.</p>
+      </div>
     </div>
     {% endif %}
     {% if g.user %}
