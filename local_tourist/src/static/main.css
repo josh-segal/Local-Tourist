@@ -14,7 +14,7 @@ body {
 }
 
 .top-bar {
-    width: 100%;
+    width: 100vw;
     height: 8%;
     display: flex;
     position: absolute;
@@ -30,7 +30,9 @@ body {
 }
 
 .top-bar-button {
-    margin-right: 3%;
+    width: 7.5vw;
+    text-align: center;
+    margin-right: 1vw;
     border-radius: 8px;
     border-style: none;
     box-sizing: border-box;
@@ -38,7 +40,7 @@ body {
     flex-shrink: 0;
     font-family: 'Coolvetica', sans-serif;
     letter-spacing: 0.1rem;
-    font-size: 16px;
+    font-size: 0.8vw;
     font-weight: 600;
     padding: 0 1.6rem;
     text-align: center;
@@ -60,12 +62,16 @@ body {
     background-image: linear-gradient(92.88deg, #2FD2A4, #42f4af);
 }
 
+.b-learn-more {
+    width: 12vw;
+}
+
 .b-login:hover {
     box-shadow: rgba(221, 221, 221, 0.2) 0 1px 30px;
     transition-duration: .1s;
   }
 
-.b-register:hover {
+.b-register:hover, .b-learn-more {
   box-shadow: rgba(66, 244, 175, 0.2) 0 1px 30px;
   transition-duration: .1s;
 }
@@ -83,14 +89,14 @@ body {
 
 #logo {
     align-self: center;
-    width: 3%;
+    width: 3vw;
     margin-left: 2%;
     margin-top: 0.5%;
 }
 
 #wordmark {
     align-self: center;
-    width: 10%;
+    width: 10vw;
     margin-top: 0.2%;
     margin-left: 0.4%;
     margin-right: 67vw;
@@ -112,7 +118,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50rem;
+    height: 55rem;
     transform-style: preserve-3d;
     z-index: -1;
 }
@@ -148,9 +154,17 @@ body {
   }
 
 .desc {
-    font-family: serif;
+    font-family: 'Coolvetica', sans-serif;
+    letter-spacing: 0.1rem;
     margin-top: 2vw;
     font-size: 1vw;
+    padding: 2vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1vw;
+}
+
+.desc a {
+    color: white;
 }
 
 .b-learn-more {
@@ -171,5 +185,43 @@ body {
     font-weight: 400;
     font-style: normal;
     background-color: white;
-    filter: drop-shadow(0px -10px 50px rgba(0, 0, 0, 0.5));
+}
+
+.icon-wrapper {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    padding-left: 3vw;
+    font-family: 'Coolvetica', sans-serif;
+}
+
+.icon-div {
+    justify-content: center;
+    width: 20vw;
+    padding-right: 3vw;
+}
+
+.front-icon {
+    width: 40%;
+    margin-top: 5vw;
+    margin-bottom: 2vw;
+    transition: all 0.5s ease;
+}
+
+.front-icon:hover {
+    transform: scale(1.05);
+}
+
+.icon-wrapper h1 {
+    width: 100%;
+    margin-bottom: 1vw;
+    font-size: 1.5vw;
+    letter-spacing: 0.1rem;
+}
+
+.icon-wrapper p {
+    width: 100%;
+    margin-bottom: 5vw;
+    text-align: center;
+    font-size: 1vw;
 }
