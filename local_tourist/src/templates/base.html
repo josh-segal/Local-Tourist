@@ -1,44 +1,29 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - Tourist</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-<nav class='top-bar'>
-  <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
-  <img id="wordmark" src="{{ url_for('static', filename='wordmark.png') }}">
-  <div class='top-buttons'>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+  <h1>Local Tourist</h1>
+  <ul>
     {% if g.user %}
       <li><span>{{ g.user }}</span>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-      <li><a href="{{ url_for('list.plan', user_id=g.user) }}">My Plan</a>
-      <li><a href="{{ url_for('list.rank', user_id=g.user) }}">My Rankings</a>
-      <li><a href="{{ url_for('list.index', user_id=g.user) }}">Home</a>
+    <li><a href="{{ url_for('list.plan', user_id=g.user) }}">My Plan</a>
+    <li><a href="{{ url_for('list.rank', user_id=g.user) }}">My Rankings</a>
+    <li><a href="{{ url_for('list.index', user_id=g.user) }}">Home</a>
     {% else %}
-    <button type="button" class="top-bar-button b-log-in" onclick = window.location.href="{{ url_for('auth.login') }}">Sign In</button>
-    <button type="button" class="top-bar-button b-register" onclick = window.location.href="{{ url_for('auth.register') }}">Sign Up</button>
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
-  </div>
+  </ul>
 </nav>
 <section class="content">
-  <div class="wrapper">
-    <header class="video-container">
-      <video autoplay muted loop>
-          <source src="{{ url_for('static', filename='boston.mp4') }}" type="video/mp4" />
-      </video>
-      <div class="caption">
-        <h2>Travel like a local.</h2>
-        <div class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-        <button type="button" class="top-bar-button b-learn-more" onclick = window.location.href="{{ url_for('auth.register') }}">Learn More</button>
-      </div>
-    </header>
-    <section class="rest">
-      <header>
-        {% block header %}{% endblock %}
-      </header>
-      {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-      {% endfor %}
-      {% block content %}{% endblock %}
-    </div>
-    </section>
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
 </section>
 <footer>
         <p>This project is still in development. For the most up-to-date documentation and code check the <a href="https://github.com/josh-segal/Local-Tourist">GitHub repository</a></p>
