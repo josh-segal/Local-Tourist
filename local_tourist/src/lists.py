@@ -132,62 +132,6 @@ def rank(user_id):
     return redirect(url_for('index'))
 
 
-# @bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
-#           ':lng>', methods=['GET', 'POST', ])
-# def add_to_rank(user_id, attraction_id, name, location, lat, lng):
-#     db = get_db()
-#     collection_ref = db.collection('attractions')
-#     doc_ref = collection_ref.document(attraction_id)
-#     doc = doc_ref.get()
-#
-#     if doc.exists:
-#         if user_rank_db_exists(user_id):
-#             attractions = db.collection('users').document(user_id)
-#             rank_doc = attractions.get().to_dict()
-#             rank_list = rank_doc.get('rank')
-#             n = len(rank_list)
-#
-#             return redirect(
-#                 url_for('list.GET_rank', user_id=user_id, attraction_id=attraction_id, leftIdx=0, rightIdx=n))
-#         else:
-#             user_doc_ref = db.collection('users').document(user_id)
-#             attraction = doc.to_dict()
-#             current_plan = user_doc_ref.get().to_dict().get('rank', [])
-#             new_plan = current_plan + [attraction]
-#             user_doc_ref.update({'rank': new_plan})
-#     else:
-#         data = {
-#             'name': name,
-#             'location': location,
-#             'latitude': float(lat),
-#             'longitude': float(lng),
-#             'id': attraction_id,
-#             'rank': 1
-#         }
-#
-#         doc_ref = db.collection('attractions').document(attraction_id)
-#         doc_ref.set(data)
-#
-#         if user_rank_db_exists(user_id):
-#             attractions = db.collection('users').document(user_id)
-#             rank_doc = attractions.get().to_dict()
-#             rank_list = rank_doc.get('rank')
-#             n = len(rank_list)
-#
-#             return redirect(
-#                 url_for('list.GET_rank', user_id=user_id, attraction_id=attraction_id, leftIdx=0, rightIdx=n))
-#
-#         else:
-#             user_doc_ref = db.collection('users').document(user_id)
-#             attraction = doc_ref.to_dict()
-#             current_plan = user_doc_ref.get().to_dict().get('rank', [])
-#             new_plan = current_plan + [attraction]
-#             user_doc_ref.update({'rank': new_plan})
-#
-#     flash('Attraction added to your ranking successfully.')
-#     return redirect(url_for('index'))
-
-
 @bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
           ':lng>', methods=['GET', 'POST', ])
 def add_to_rank(user_id, attraction_id, name, location, lat, lng):
@@ -221,24 +165,6 @@ def add_to_rank(user_id, attraction_id, name, location, lat, lng):
 
     flash('Attraction added to your ranking successfully.')
     return redirect(url_for('index'))
-
-
-# @bp.route('/GET_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
-#           ':lng>/<int:leftIdx>/<int:rightIdx>', methods=['GET', 'POST'])
-# def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx):
-#     db = get_db()
-#     to_rank = db.collection('attractions').document(attraction_id).get().to_dict()
-#     attractions = db.collection('users').document(user_id)
-#     rank_doc = attractions.get().to_dict()
-#     rank = rank_doc.get('rank')
-#     n = len(rank)
-#     mid = (leftIdx + rightIdx) // 2
-#     print("mid: ", mid)
-#     print("left: ", leftIdx)
-#     print("right: ", rightIdx)
-#
-#     return render_template('list/GET_rank.html', user_id=user_id, ranked_list=rank, midIdx=mid,
-#                            to_rank=to_rank, length=n)
 
 
 @bp.route('/GET_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
@@ -277,8 +203,6 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
     if leftIdx >= rightIdx:
         new_ranked_list = ranked_list[:leftIdx] + [data] + ranked_list[leftIdx:]
         attractions.update({'rank': new_ranked_list})
-        # new_ranked_list = ranked_list + [data]
-        # attractions.update({'rank': new_ranked_list})
         return redirect(url_for('list.rank', user_id=user_id))
 
     elif leftIdx == mid and not first_zero_comp and len(ranked_list) > 1:
@@ -297,55 +221,11 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
         return redirect(url_for('list.rank', user_id=user_id))
-        # mid = (leftIdx + rightIdx) // 2
-        # if mid > rightIdx:
-        #     data = {
-        #         'name': name,
-        #         'location': location,
-        #         'latitude': float(lat),
-        #         'longitude': float(lng),
-        #         'id': attraction_id,
-        #         'rank': rightIdx
-        #     }
-        #     new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
-        #     attractions.update({'rank': new_ranked_list})
-        #     return redirect(url_for('list.rank', user_id=user_id))
     else:
 
         return render_template('list/GET_rank.html', ranked_list=ranked_list, user_id=user_id, leftIdx=leftIdx,
                                rightIdx=rightIdx, attraction_id=attraction_id, name=name, location=location,
                                lat=lat, lng=lng, first_zero_comp=first_zero_comp)
-
-
-# @bp.route('/POST_rank/<string:user_id>/<int:leftIdx>/<int:rightIdx>/<int:length>/<string:attraction_id>',
-#           methods=['POST'])
-# def POST_rank(user_id, leftIdx, rightIdx, length, attraction_id):
-#     if leftIdx >= rightIdx:
-#         db = get_db()
-#         attractions = db.collection('users').document(user_id)
-#         to_rank = db.collection('attractions').document(attraction_id).get().to_dict()
-#         rank_doc = attractions.get().to_dict()
-#         rank = rank_doc.get('rank', {})
-#         rank[leftIdx] = to_rank
-#         # rank.insert(leftIdx, [to_rank])
-#         attractions.update({'rank': rank})
-#         # set attraction to index "left" in ranked_list
-#         # show user rank list or index list
-#         return redirect(url_for('list.rank', user_id=user_id))
-#     if ((leftIdx + rightIdx) // 2) > length:
-#         db = get_db()
-#         attractions = db.collection('users').document(user_id)
-#         to_rank = db.collection('attractions').document(attraction_id).get().to_dict()
-#         rank_doc = attractions.get().to_dict()
-#         rank = rank_doc.get('rank', {})
-#         rank[rightIdx] = to_rank
-#         # rank.insert(leftIdx, [to_rank])
-#         attractions.update({'rank': rank})
-#         # set attraction to index "right" in ranked_list
-#         return redirect(url_for('list.rank', user_id=user_id))
-#     else:
-#         return redirect(
-#             url_for('list.GET_rank', user_id=user_id, attraction_id=attraction_id, leftIdx=leftIdx, rightIdx=rightIdx))
 
 
 @bp.route('/clear_rank/<string:user_id>', methods=('POST',))
