@@ -10,6 +10,10 @@ from .db import get_db
 from .algorithms import bubble_sort_attractions
 from .googlemaps_places import nearby_search
 
+file = open('src/key.txt', 'r')
+api_key = file.read()
+file.close()
+
 bp = Blueprint('list', __name__)
 
 
@@ -29,11 +33,11 @@ def index():
             user_preferences.append(value)
         # attractions_sorted = bubble_sort_attractions(attractions_list, user_preferences) TODO: reimplement user pref model with new places data points
         # return render_template('list/index.html', attractions=attractions_sorted)
-        return render_template('list/index.html', attractions=attractions)
+        return render_template('list/index.html', attractions=attractions, api_key=api_key)
     else:
         db = get_db()
         attractions = db.collection('attractions').stream()
-    return render_template('list/index.html', attractions=attractions)
+    return render_template('list/index.html', attractions=attractions, api_key=api_key)
 
 
 @bp.route('/location/<string:location>', methods=['POST', ])
@@ -42,7 +46,7 @@ def change_location(location):
     user_id = g.user
     clear_plan(user_id)
     flash('Location changed to ' + location)
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 # TODO: ADD UNIQUE IDS TO ATTRACTIONS LOOK AT INDEX.HTML ROUTING
@@ -83,7 +87,7 @@ def add_to_trip(user_id, attraction_id, name, location, lat, lng, photo_ref):
         user_doc_ref.update({'plan': new_plan})
 
     flash('Attraction added to your trip successfully.')
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 @bp.route('/plan/<string:user_id>')
@@ -94,10 +98,10 @@ def plan(user_id):
         plan_doc = attractions.get()
         plan = plan_doc.get('plan')
         # implement sorting with geolocation here ?
-        return render_template('list/plan.html', attractions=plan)
+        return render_template('list/plan.html', attractions=plan, api_key=api_key)
     else:
         flash("You don't have a plan yet.")
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 @bp.route('/clear_plan/<string:user_id>', methods=('POST',))
@@ -105,7 +109,7 @@ def clear_plan(user_id):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
     doc_ref.update({'plan': firebase.firestore.DELETE_FIELD})
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 @bp.route('/clear_single_plan/<string:user_id>/<string:user_attraction_id>', methods=('POST',))
@@ -115,7 +119,7 @@ def clear_single_plan(user_id, user_attraction_id):
     doc_ref = db.collection('users').document(user_id)
     target_doc_ref = db.collection('attractions').document(user_attraction_id).get().to_dict()
     doc_ref.update({'plan': firebase.firestore.ArrayRemove([target_doc_ref])})
-    return redirect(url_for('list.plan', user_id=user_id))
+    return redirect(url_for('list.plan', user_id=user_id, api_key=api_key))
 
 
 @bp.route('/rank/<string:user_id>')
@@ -126,11 +130,11 @@ def rank(user_id):
         attractions = db.collection('users').document(user_id)
         rank_doc = attractions.get()
         rank = rank_doc.get('rank')
-        return render_template('list/rank.html', attractions=rank)
+        return render_template('list/rank.html', attractions=rank, api_key=api_key)
 
     else:
         flash("You don't have any rankings yet.")
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 @bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
@@ -161,12 +165,12 @@ def add_to_rank(user_id, attraction_id, name, location, lat, lng, photo_ref):
 
             return redirect(
                 url_for('list.GET_rank', user_id=user_id, attraction_id=attraction_id, name=name, location=location,
-                        lat=lat, lng=lng, leftIdx=0, rightIdx=n, first_zero_comp=first_zero_comp))
+                        lat=lat, lng=lng, leftIdx=0, rightIdx=n, first_zero_comp=first_zero_comp, api_key=api_key))
     else:
         user_doc_ref.update({'rank': [data]})
 
     flash('Attraction added to your ranking successfully.')
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 @bp.route('/GET_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
@@ -205,29 +209,29 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
     if leftIdx >= rightIdx:
         new_ranked_list = ranked_list[:leftIdx] + [data] + ranked_list[leftIdx:]
         attractions.update({'rank': new_ranked_list})
-        return redirect(url_for('list.rank', user_id=user_id))
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 
     elif leftIdx == mid and not first_zero_comp and len(ranked_list) > 1:
         # Insert data at leftIdx
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
-        return redirect(url_for('list.rank', user_id=user_id))
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 
     elif leftIdx == mid and first_zero_comp and len(ranked_list) == 1:
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
-        return redirect(url_for('list.rank', user_id=user_id))
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 
     elif rightIdx == mid:
         # Insert data at rightIdx
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
-        return redirect(url_for('list.rank', user_id=user_id))
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
     else:
 
         return render_template('list/GET_rank.html', ranked_list=ranked_list, user_id=user_id, leftIdx=leftIdx,
                                rightIdx=rightIdx, attraction_id=attraction_id, name=name, location=location,
-                               lat=lat, lng=lng, first_zero_comp=first_zero_comp)
+                               lat=lat, lng=lng, first_zero_comp=first_zero_comp, api_key=api_key)
 
 
 @bp.route('/clear_rank/<string:user_id>', methods=('POST',))
@@ -236,7 +240,7 @@ def clear_rank(user_id):
     db = get_db()
     doc_ref = db.collection('users').document(user_id)
     doc_ref.update({'rank': firebase.firestore.DELETE_FIELD})
-    return redirect(url_for('index'))
+    return redirect(url_for('index', api_key=api_key))
 
 
 @bp.route('/clear_single_rank/<string:user_id>/<int:to_remove>', methods=('POST',))
@@ -257,7 +261,7 @@ def clear_single_rank(user_id, to_remove):
             new_ranked_list = ranked_list[:to_remove] + ranked_list[(to_remove + 1):]
         attractions.update({'rank': new_ranked_list})
 
-    return redirect(url_for('list.rank', user_id=user_id))
+    return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 
 
 def user_plan_db_exists(user_id):
