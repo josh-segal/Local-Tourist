@@ -49,10 +49,10 @@
             location: {{ attraction['vicinity'] }} <br>
             </div>
         </div>
-    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
+    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng'], photo_ref=attraction['photos'][0]['photo_reference']) }}">
         <button type="submit" class="action">Add to plan</button>
     </form>
-        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
+        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng'], photo_ref=attraction['photos'][0]['photo_reference']) }}">
         <button type="submit" class="action">Rank item</button>
     </form>
 

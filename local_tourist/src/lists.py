@@ -47,9 +47,10 @@ def change_location(location):
 
 # TODO: ADD UNIQUE IDS TO ATTRACTIONS LOOK AT INDEX.HTML ROUTING
 @bp.route(
-    '/add_to_trip/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string:lng>',
+    '/add_to_trip/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string:lng'
+    '>/<string:photo_ref>',
     methods=['POST'])
-def add_to_trip(user_id, attraction_id, name, location, lat, lng):
+def add_to_trip(user_id, attraction_id, name, location, lat, lng, photo_ref):
     db = get_db()
     collection_ref = db.collection('attractions')
     doc_ref = collection_ref.document(attraction_id)
@@ -69,13 +70,13 @@ def add_to_trip(user_id, attraction_id, name, location, lat, lng):
             'latitude': float(lat),
             'longitude': float(lng),
             'id': attraction_id,
+            'photo_ref': photo_ref,
         }
 
-        doc_ref = db.collection('attractions').document(attraction_id)
         doc_ref.set(data)
 
         user_doc_ref = db.collection('users').document(user_id)
-        new_attraction = collection_ref.document(attraction_id)
+        new_attraction = doc_ref
         attraction = new_attraction.get().to_dict()
         current_plan = user_doc_ref.get().to_dict().get('plan', [])
         new_plan = current_plan + [attraction]
@@ -133,8 +134,8 @@ def rank(user_id):
 
 
 @bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
-          ':lng>', methods=['GET', 'POST', ])
-def add_to_rank(user_id, attraction_id, name, location, lat, lng):
+          ':lng>/<string:photo_ref>', methods=['GET', 'POST', ])
+def add_to_rank(user_id, attraction_id, name, location, lat, lng, photo_ref):
     db = get_db()
     user_doc_ref = db.collection('users').document(user_id)
     data = {
@@ -143,7 +144,8 @@ def add_to_rank(user_id, attraction_id, name, location, lat, lng):
         'latitude': float(lat),
         'longitude': float(lng),
         'id': attraction_id,
-        'rank': 1
+        'rank': 1,
+        'photo_ref': photo_ref,
     }
     if user_rank_db_exists(user_id):
         current_plan = user_doc_ref.get().to_dict().get('rank', [])
