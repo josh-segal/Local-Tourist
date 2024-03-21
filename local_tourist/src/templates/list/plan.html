@@ -7,7 +7,7 @@
     <form action="{{ url_for('list.clear_plan', user_id=g.user) }}" method="post">
     <input class="danger" type="submit" value="Delete plan">
   </form>
-      <a href="{{ url_for('trip.map', user_id=g.user, mode='walking') }}">Generate Route</a>
+      <a href="{{ url_for('trip.map', user_id=g.user, mode='walking', api_key=api_key) }}">Generate Route</a>
     </h1>
   {% for attraction in attractions %}
     <article class="attraction">

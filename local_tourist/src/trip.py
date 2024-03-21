@@ -38,4 +38,4 @@ def map(user_id, mode):
     optimal_distance, optimal_path = tsp_attractions(user_distance_matrix)
     attractions_optimal_order = [plan[i] for i in optimal_path]
 
-    return render_template('trip/map.html', path=optimal_path, attractions=attractions_optimal_order)
+    return render_template('trip/map.html', path=optimal_path, attractions=attractions_optimal_order, api_key=api_key)
