@@ -1,31 +1,64 @@
-{% extends 'base.html' %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='plan.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% block header %}
-  <h1>{% block title %}My Plan{% endblock %}
-{% endblock %}
-{% block content %}
-    <form action="{{ url_for('list.clear_plan', user_id=g.user) }}" method="post">
-    <input class="danger" type="submit" value="Delete plan">
-  </form>
-      <a href="{{ url_for('trip.map', user_id=g.user, mode='walking') }}">Generate Route</a>
+<nav class='top-bar'>
+  <a id="logo-wrapper" href="{{ url_for('list.index', user_id=g.user) }}">
+    <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
+    <img id="wordmark" src="{{ url_for('static', filename='wordmark.png') }}">
+  </a>
+  <div class="top-bar-back"></div>
+  <div class="user-top-buttons top-buttons">
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.index', user_id=g.user) }}">Home</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.plan', user_id=g.user) }}">My Plan</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.rank', user_id=g.user) }}">My Rankings</button>
+    <button type="button" class="top-bar-button b-register"
+      onclick=window.location.href="{{ url_for('auth.logout') }}">Sign Out</button>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="rest">
+    <h1>{% block title %}My Plan{% endblock %}
+      {% endblock %}
+      {% block content %}
     </h1>
-  {% for attraction in attractions %}
-    <article class="attraction">
-      <header>
-        <div>
-          <h1>{{ attraction['name'] }}</h1>
-          <div class="description">
-            location: {{ attraction['location'] }} <br>
-            <form action="{{ url_for('list.clear_single_plan', user_id=g.user, user_attraction_id=attraction['id']) }}" method="post">
-    <input type="submit" value="Delete Attraction">
-</form>
-            </div>
-        </div>
-      </header>
-      <p class="body"> </p>
-    </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
-  {% endfor %}
+    <div class="topper-wrapper">
+      <h1>Okay, {{ g.user }}. Here's the plan.</h1>
+      <p>Are you ready to go?</p>
+      <div class="topper-button-wrapper">
+        <form action="{{ url_for('trip.map', user_id=g.user, mode='walking', api_key=api_key) }}" method="post">
+          <button class="action top-bar-button b-register" type="submit">Generate Route</button>
+        </form>
+        <form action="{{ url_for('list.clear_plan', user_id=g.user) }}" method="post">
+          <button class="action top-bar-button b-delete" type="submit">Delete Plan</button>
+        </form>
+      </div>
+    </div>
+    <div class="attraction-wrapper">
+      {% for attraction in attractions %}
+      <div class="attraction"
+        style="background-image: linear-gradient(to bottom, #212529bf, rgba(255, 255, 255, 0.1)), url({{"
+        https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="}}{{ attraction['photo_ref'] }}{{ "&key=" }}{{ api_key }});">
+        <header>
+          <div class="attraction-top">
+            <h1 class="name">{{ attraction['name'] }}</h1>
+            <h1>{{ attraction['place_id'] }}</h1>
+            <div class="description">{{ attraction['location'] }}</div>
+          </div>
+          <div class="attraction-bottom">
+            <form action="{{ url_for('list.clear_single_plan', user_id=g.user, user_attraction_id=attraction['id']) }}"
+              method="post">
+              <button type="submit" class="action delete-from-plan"><i class="fa fa-times icons"></i>Remove</button>
+            </form>
+          </div>
+        </header>
+        <p class="body"> </p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
 {% endblock %}

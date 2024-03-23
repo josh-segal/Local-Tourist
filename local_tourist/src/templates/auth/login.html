@@ -1,15 +1,20 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
 
-{% block header %}
-  <h1>{% block title %}Log In{% endblock %}</h1>
-{% endblock %}
+<nav class='top-bar'>
+  <a id="logo-wrapper" href="{{ url_for('list.index', user_id=g.user) }}">
+    <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
+    <img id="wordmark" src="{{ url_for('static', filename='wordmark.png') }}">
+  </a>
+</nav>
 
 {% block content %}
+<div class="login-box">
+  <h1>Sign in</h1>
   <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log In">
+    <input name="username" id="username" placeholder="username" required>
+    <input type="password" name="password" id="password" placeholder="password" required>
+    <input type="submit" value="Sign In" id="login-button">
   </form>
+  <div class="donthave">Don't have an account? <a href="{{ url_for('auth.register') }}">Sign up!</a></div>
+</div>
 {% endblock %}

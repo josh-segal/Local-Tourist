@@ -30,7 +30,6 @@ body {
 }
 
 .top-bar-button {
-    width: 7.5vw;
     text-align: center;
     margin-right: 1vw;
     border-radius: 8px;
@@ -42,14 +41,34 @@ body {
     letter-spacing: 0.1rem;
     font-size: 0.8vw;
     font-weight: 600;
-    padding: 0 1.6rem;
+    padding: 0;
     text-align: center;
     align-items: center;
-    text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
     transition: all .5s;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+}
+
+.top-bar-button:hover {
+    transform: scale(1.05);
+}
+
+.user-top-buttons {
+    margin-left: auto;
+}
+
+.top-bar-back {
+    position: absolute;
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.guest-top-buttons {
+    margin-left: auto;
+    margin-right: 1vw;
 }
 
 .b-log-in {
@@ -62,23 +81,28 @@ body {
     background-image: linear-gradient(92.88deg, #2FD2A4, #42f4af);
 }
 
+.b-delete {
+    color: #FFFFFF;
+    background-image: linear-gradient(92.88deg, #AE0707, #C62525);
+}
+
 .b-learn-more {
     width: 12vw;
 }
 
-.b-login:hover {
+.b-log-in:hover {
     box-shadow: rgba(221, 221, 221, 0.2) 0 1px 30px;
-    transition-duration: .1s;
-  }
+    transition: all .5s;
+}
 
 .b-register:hover, .b-learn-more {
   box-shadow: rgba(66, 244, 175, 0.2) 0 1px 30px;
-  transition-duration: .1s;
+  transition: all .5s;
 }
 
-.button-border {
-    width: 0.1%;
-    background: black;
+.b-delete:hover {
+    box-shadow: rgba(200, 0, 0, 0.2) 0 1px 30px;
+    transition: all .5s;
 }
 
 @media (min-width: 768px) {
@@ -88,18 +112,24 @@ body {
 }
 
 #logo {
-    align-self: center;
     width: 3vw;
-    margin-left: 2%;
-    margin-top: 0.5%;
+    margin-left: 1vw;
 }
 
 #wordmark {
-    align-self: center;
     width: 10vw;
-    margin-top: 0.2%;
-    margin-left: 0.4%;
-    margin-right: 67vw;
+    margin-left: 0.5vw;
+}
+
+#logo-wrapper {
+    display: flex;
+    max-width: 20%;
+    height: 100%;
+    align-items: center;
+}
+
+#logo-wrapper img {
+    margin-top: 0.3vw;
 }
 
 .video-container::before {
@@ -151,7 +181,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     perspective: 10px;
-  }
+}
 
 .desc {
     font-family: 'Coolvetica', sans-serif;
@@ -184,7 +214,7 @@ body {
     font-family: "Helvetica", sans-serif;
     font-weight: 400;
     font-style: normal;
-    background-color: white;
+    background-color: #f1f1f1;
 }
 
 .icon-wrapper {
@@ -224,4 +254,127 @@ body {
     margin-bottom: 5vw;
     text-align: center;
     font-size: 1vw;
+}
+
+.topper-wrapper {
+    padding-top: 10vw;
+    text-align: center;
+    font-family: 'Coolvetica', sans-serif;
+    font-size: 2vw;
+}
+
+.topper-wrapper h1 {
+    letter-spacing: 0.1rem;
+    margin-bottom: 1vw;
+}
+
+.topper-wrapper p {
+    margin-bottom: 2vw;
+}
+
+.topper-wrapper button {
+    height: 3vw;
+    cursor: pointer;
+    transition: all 0.5s;
+    text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+    font-size: 1vw;
+}
+
+.topper-wrapper button:hover {
+    transform: scale(1.05);
+}
+
+.topper-button-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.attraction {
+    width: 20vw;
+    height: 25vw;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    font-family: 'Coolvetica', sans-serif;
+    transition: all .5s;
+}
+
+.attraction:hover {
+    transform: scale(1.01);
+}
+
+.attraction-top {
+    height: 80%;
+}
+
+.attraction-bottom {
+    height: 20%;
+}
+
+.attraction-wrapper {
+    margin-top: 5vw;
+    padding-bottom: 5vw;
+    display: grid;
+    grid-template-columns: 20vw 20vw 20vw 20vw;
+    row-gap: 1vw;
+    column-gap: 1vw;
+    justify-content: center;
+}
+
+.name, .description {
+    text-align: center;
+    letter-spacing: 0.1rem;
+    font-size: 1.5vw;
+    color: white;
+    padding-top: 1.5vw;
+    width: 80%;
+    padding-left: 10%;
+}
+
+.description {
+    letter-spacing: normal;
+    font-size: 1vw;
+    font-weight: 100;
+}
+
+.add-to-plan, .rank-item, .delete-from-plan {
+    font-size: 1vw;
+    font-family: 'Coolvetica', sans-serif;
+    transition: all .5s;
+    cursor: pointer;
+    color: white;
+    border-radius: 10px;
+    margin-top: 10%;
+    height: 70%;
+    width: 9vw;
+    transition: all .5s;
+    text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+    border: none;
+}
+
+.add-to-plan:hover, .rank-item:hover, .delete-from-plan:hover {
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.2) 0 1px 30px;
+}
+
+.add-to-plan {
+    background-image: linear-gradient(92.88deg, #2FD2A4, #42f4af);
+    margin-right: 0.5vw;
+}
+
+.rank-item {
+    background-image: linear-gradient(92.88deg, #edae02, #ffe000);
+}
+
+.delete-from-plan {
+    background-image: linear-gradient(92.88deg, #AE0707, #C62525);
+}
+
+.icons {
+    margin-right: 0.5vw;
+}
+
+.attraction-bottom {
+    display: flex;
+    justify-content: center;
 }
