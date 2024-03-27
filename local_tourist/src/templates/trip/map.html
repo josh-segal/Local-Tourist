@@ -14,16 +14,27 @@
 <body>
     <div id="map"></div>
     <p>Your Itinerary</p>
-    <ul id="attractionOrder">
-        {% for i in range(attractions|length - 1) %}
-            <li>
-                {{i+1}}. {{ attractions[i].name }}
-                {% if i > 0 and i < attractions|length - 1 %}
-                        <a href="https://www.google.com/maps/dir/{{ attractions[i-1].latitude }},{{ attractions[i-1].longitude }}/{{ attractions[i].latitude }},{{ attractions[i].longitude }}" target="_blank">Get directions to {{ attractions[i].name }} from {{ attractions[i-1].name }}</a>
-                    {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+
+
+        <script>
+            var waypoints = "";
+            {% for attraction in attractions %}
+            {% if not loop.last %}
+            waypoints += "{{ attraction['latitude']|string }},{{ attraction['longitude']|string }}/";
+            {% endif %}
+            {% endfor %}
+
+            var base_url = "https://www.google.com/maps/dir//";
+            var full_url = base_url + waypoints;
+
+            var linkElement = document.createElement("a");
+            linkElement.href = full_url;
+            linkElement.target = "_blank";
+            linkElement.textContent = "Click here for directions";
+
+            document.body.appendChild(linkElement);
+
+        </script>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap&loading=async"></script>
 
