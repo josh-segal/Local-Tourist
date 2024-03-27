@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='plan.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% block header %}
-<<<<<<< HEAD
 <nav class='top-bar'>
   <a id="logo-wrapper" href="{{ url_for('list.index', user_id=g.user) }}">
     <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
@@ -25,18 +24,6 @@
     <h1>{% block title %}My Plan{% endblock %}
       {% endblock %}
       {% block content %}
-=======
-  <h1>{% block title %}My Plan{% endblock %}
-{% endblock %}
-{% block content %}
-    <form action="{{ url_for('list.clear_plan', user_id=g.user) }}" method="post">
-    <input class="danger" type="submit" value="Delete plan">
-  </form>
-      <a href="{{ url_for('trip.map', user_id=g.user, mode='walking', api_key=api_key) }}">Generate Route</a>
-<<<<<<< HEAD
->>>>>>> df1a342 (adds map, secures api_key)
-=======
->>>>>>> main
     </h1>
     <div class="topper-wrapper">
       <h1>Okay, {{ g.user }}. Here's the plan.</h1>
