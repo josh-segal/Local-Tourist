@@ -29,7 +29,7 @@
       <h1>Okay, {{ g.user }}. Here's the plan.</h1>
       <p>Are you ready to go?</p>
       <div class="topper-button-wrapper">
-        <form action="{{ url_for('trip.map', user_id=g.user, mode='walking', api_key=api_key) }}" method="post">
+        <form action="{{ url_for('trip.map', user_id=g.user, mode='walking', api_key=api_key) }}">
           <button class="action top-bar-button b-register" type="submit">Generate Route</button>
         </form>
         <form action="{{ url_for('list.clear_plan', user_id=g.user) }}" method="post">
