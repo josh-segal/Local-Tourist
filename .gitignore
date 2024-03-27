@@ -7,6 +7,8 @@ venv/
 .idea/
 env/
 __pycache__/
+.DS_Store
+local_tourist/.DS_Store
 =======
 key.txt
 >>>>>>> df1a342 (adds map, secures api_key)
