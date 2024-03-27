@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block header %}
 <<<<<<< HEAD
+<<<<<<< HEAD
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <nav class='top-bar'>
@@ -121,6 +122,8 @@
 </div>
 {% endblock %}
 =======
+=======
+>>>>>>> main
 {% if g.user %}
 
   <h1>{% block title %}List of Attractions{% endblock %}</h1>
@@ -128,7 +131,11 @@
     {% endif %}
 {% if not g.user %}
 
+<<<<<<< HEAD
   <h1 id="welcome">Welcome to Local Tourist</h1>
+=======
+  <h1>Welcome to Local Tourist</h1>
+>>>>>>> main
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -188,4 +195,7 @@
 {% endblock %}
 
 
+<<<<<<< HEAD
 >>>>>>> e814cc8 (Revert "Fixed video showing on other pages!")
+=======
+>>>>>>> main

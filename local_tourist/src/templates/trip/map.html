@@ -17,8 +17,11 @@
     <div id="map"></div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> fb12398 (updates map.html with rich routes, itinerary, and directions)
+=======
+>>>>>>> main
     <p>Your Itinerary</p>
     <ul id="attractionOrder">
         {% for i in range(attractions|length - 1) %}
@@ -31,10 +34,13 @@
         {% endfor %}
     </ul>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> df1a342 (adds map, secures api_key)
 =======
 >>>>>>> fb12398 (updates map.html with rich routes, itinerary, and directions)
+=======
+>>>>>>> main
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap&loading=async"></script>
 
@@ -42,8 +48,11 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> fb12398 (updates map.html with rich routes, itinerary, and directions)
+=======
+>>>>>>> main
     var attractionsArray = [];
     {% for attraction in attractions %}
         var attraction = {
@@ -58,6 +67,9 @@
         {% for point in optimal_path %}
             optimalPath.push(point);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
         {% endfor %}
 
     function initMap() {
@@ -98,6 +110,7 @@
     }
     window.initMap = initMap;
 </script>
+<<<<<<< HEAD
 =======
         var attractionsArray = [];
         {% for attraction in attractions %}
@@ -155,6 +168,8 @@
     window.initMap = initMap;
 </script>
 >>>>>>> fb12398 (updates map.html with rich routes, itinerary, and directions)
+=======
+>>>>>>> main
 </body>
 <html>
 {% endblock %}

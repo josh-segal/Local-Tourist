@@ -2,6 +2,7 @@ key.json
 <<<<<<< HEAD
 <<<<<<< HEAD
 key.txt
+<<<<<<< HEAD
 .env
 venv/
 .idea/
@@ -18,3 +19,8 @@ key.txt
 env/
 venv/
 >>>>>>> b0cf558 (adds photo_ref to user attractions)
+=======
+.idea/
+env/
+venv/
+>>>>>>> main

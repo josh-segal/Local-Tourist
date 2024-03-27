@@ -135,10 +135,14 @@ def rank(user_id):
     else:
         flash("You don't have any rankings yet.")
 <<<<<<< HEAD
+<<<<<<< HEAD
     return redirect(url_for('index', api_key=api_key))
 =======
     return redirect(url_for('index'))
 >>>>>>> 091e1a4 (code cleanup)
+=======
+    return redirect(url_for('index', api_key=api_key))
+>>>>>>> main
 
 
 @bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
@@ -175,10 +179,14 @@ def add_to_rank(user_id, attraction_id, name, location, lat, lng, photo_ref):
 
     flash('Attraction added to your ranking successfully.')
 <<<<<<< HEAD
+<<<<<<< HEAD
     return redirect(url_for('index', api_key=api_key))
 =======
     return redirect(url_for('index'))
 >>>>>>> 091e1a4 (code cleanup)
+=======
+    return redirect(url_for('index', api_key=api_key))
+>>>>>>> main
 
 
 @bp.route('/GET_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
@@ -218,10 +226,14 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
         new_ranked_list = ranked_list[:leftIdx] + [data] + ranked_list[leftIdx:]
         attractions.update({'rank': new_ranked_list})
 <<<<<<< HEAD
+<<<<<<< HEAD
         return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 =======
         return redirect(url_for('list.rank', user_id=user_id))
 >>>>>>> 091e1a4 (code cleanup)
+=======
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
+>>>>>>> main
 
     elif leftIdx == mid and not first_zero_comp and len(ranked_list) > 1:
         # Insert data at leftIdx
@@ -239,19 +251,27 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
 <<<<<<< HEAD
+<<<<<<< HEAD
         return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 =======
         return redirect(url_for('list.rank', user_id=user_id))
 >>>>>>> 091e1a4 (code cleanup)
+=======
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
+>>>>>>> main
     else:
 
         return render_template('list/GET_rank.html', ranked_list=ranked_list, user_id=user_id, leftIdx=leftIdx,
                                rightIdx=rightIdx, attraction_id=attraction_id, name=name, location=location,
 <<<<<<< HEAD
+<<<<<<< HEAD
                                lat=lat, lng=lng, first_zero_comp=first_zero_comp, api_key=api_key)
 =======
                                lat=lat, lng=lng, first_zero_comp=first_zero_comp)
 >>>>>>> 091e1a4 (code cleanup)
+=======
+                               lat=lat, lng=lng, first_zero_comp=first_zero_comp, api_key=api_key)
+>>>>>>> main
 
 
 @bp.route('/clear_rank/<string:user_id>', methods=('POST',))
