@@ -1,0 +1,159 @@
+@font-face {
+    font-family: 'Coolvetica';
+    src: url("coolvetica.otf") format("opentype");
+    font-weight: normal;
+    font-size: normal;
+}
+
+body {
+    margin: 0;
+    background-color: #f1f1f1;
+    overflow-x: hidden;
+}
+
+.top-bar {
+    width: 100vw;
+    height: 8%;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+    background-color: white;
+}
+
+#logo {
+    width: 3vw;
+    margin-left: 1vw;
+}
+
+#wordmark {
+    width: 10vw;
+    margin-left: 0.5vw;
+}
+
+#logo-wrapper {
+    display: flex;
+    width: 20%;
+    height: 100%;
+    align-items: center;
+}
+
+#logo-wrapper img {
+    margin-top: 0.3vw;
+}
+
+.login-box, .register-box {
+    margin: 0 auto;
+    margin-top: 5vw;
+    max-width: 22%;
+    background-color: white;
+    font-family: 'Coolvetica', sans-serif;
+    text-align: center;
+    padding-top: 1.5vw;
+    border-radius: 10px;
+    font-size: 0.8vw;
+    margin-bottom: 5vw;
+}
+
+.login-box h1, .register-box h1 {
+    letter-spacing: 0.1rem;
+}
+
+.login-box form, .register-box form {
+    padding-top: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1vw;
+}
+
+input {
+    width: 80%;
+    padding: 0.7vw;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    font-family:inherit;
+    background-color: #f1f1f1;
+}
+
+#login-button, #register-button {
+    margin-top: 2vw;
+    color: white;
+    background-image: linear-gradient(92.88deg, #2FD2A4, #42f4af);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#login-button:hover, #register-button:hover {
+    transform: scale(1.05);
+}
+
+a {
+    color: #2FD2A4
+}
+
+.donthave {
+    padding-bottom: 2vw;
+}
+
+.login-box, .register-box, .top-bar {
+    box-shadow: rgba(221, 221, 221, 0.5) 0 1px 30px;
+}
+
+.slidewrapper {
+    width: 80%;
+}
+  
+.slider {
+    -webkit-appearance: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-radius: 3rem;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2.2vw;
+    height: 2.2vw;
+    border: 0;
+    border-radius: 3rem;
+    background-image: url('globe.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+  
+.slider::-moz-range-thumb {
+    width: 2.2vw;
+    height: 2.2vw;
+    border: 0;
+    border-radius: 3rem;
+    background-image: url('globe.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.05);
+}
+
+.slider::-moz-range-thumb:hover {
+    transform: scale(1.05);
+}
+
+.slidewrapper p {
+    padding-top: 2vw;
+    font-size: 0.7vw;
+}
+
+.slidecontainer p {
+    padding-top: 0.1vw;
+}

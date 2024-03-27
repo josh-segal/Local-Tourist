@@ -1,5 +1,23 @@
-{% extends 'base.html' %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% block header %}
+<nav class='top-bar'>
+  <a id="logo-wrapper" href="{{ url_for('list.index', user_id=g.user) }}">
+    <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
+    <img id="wordmark" src="{{ url_for('static', filename='wordmark.png') }}">
+  </a>
+  <div class="top-bar-back"></div>
+  <div class="user-top-buttons top-buttons">
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.index', user_id=g.user) }}">Home</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.plan', user_id=g.user) }}">My Plan</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.rank', user_id=g.user) }}">My Rankings</button>
+    <button type="button" class="top-bar-button b-register"
+      onclick=window.location.href="{{ url_for('auth.logout') }}">Sign Out</button>
+  </div>
+</nav>
 {% block header %}
   <h1>{% block title %}My List{% endblock %}
 {% endblock %}
@@ -8,6 +26,9 @@
     <form action="{{ url_for('list.clear_rank', user_id=g.user) }}" method="post">
     <input class="danger" type="submit" value="Delete rankings">
   </form>
+  <div class="attraction-wrapper">
+    
+  </div>
   {% for attraction in attractions %}
     <article class="attraction">
       <header>
