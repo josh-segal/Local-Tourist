@@ -1,7 +1,11 @@
 key.json
+<<<<<<< HEAD
 key.txt
 .env
 venv/
 .idea/
 env/
 __pycache__/
+=======
+key.txt
+>>>>>>> df1a342 (adds map, secures api_key)
