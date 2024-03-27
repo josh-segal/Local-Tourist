@@ -1,5 +1,6 @@
 key.json
 <<<<<<< HEAD
+<<<<<<< HEAD
 key.txt
 .env
 venv/
@@ -9,3 +10,9 @@ __pycache__/
 =======
 key.txt
 >>>>>>> df1a342 (adds map, secures api_key)
+=======
+key.txt
+.idea/
+env/
+venv/
+>>>>>>> b0cf558 (adds photo_ref to user attractions)
