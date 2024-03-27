@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% block header %}
+<<<<<<< HEAD
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <nav class='top-bar'>
@@ -118,3 +120,72 @@
   </section>
 </div>
 {% endblock %}
+=======
+{% if g.user %}
+
+  <h1>{% block title %}List of Attractions{% endblock %}</h1>
+
+    {% endif %}
+{% if not g.user %}
+
+  <h1 id="welcome">Welcome to Local Tourist</h1>
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if not g.user %}
+    <p>Explore attractions by registering a new account or optionally using the demo login provided:
+<br> <b>Username</b>: test
+<br> <b>Password</b>: test</p>
+<div>
+                <h1>Search Attractions</h1>
+                <p>Find attractions based on geographical location.</p>
+            </div>
+            <div>
+                <h1>Add to Plan</h1>
+                <p>Add attractions to your travel plan for easy access and organization.</p>
+            </div>
+<div>
+                <h1>Optimize Your Trip</h1>
+                <p>Generate the most efficient routes between attractions in your plan for a seamless travel experience.</p>
+            </div>
+            <div>
+                <h1>Rank Attractions</h1>
+                <p>Rate attractions based on your personal experiences.</p>
+            </div>
+{% endif %}
+{% if g.user %}
+<p>Choose a location to explore:</p>
+<form method="post" action="{{ url_for('list.change_location', location='Boston') }}">
+        <button type="submit" class="action">Boston, MA</button>
+    </form>
+<form method="post" action="{{ url_for('list.change_location', location='Leuven') }}">
+        <button type="submit" class="action">Leuven, Belgium</button>
+    </form>
+  {% for attraction in attractions %}
+<article class="attraction">
+      <header>
+        <div>
+          <h1>{{ attraction['name'] }}</h1>
+          <div class="description">
+            location: {{ attraction['vicinity'] }} <br>
+            </div>
+        </div>
+    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
+        <button type="submit" class="action">Add to plan</button>
+    </form>
+        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng']) }}">
+        <button type="submit" class="action">Rank item</button>
+    </form>
+
+      </header>
+      <p class="body"> </p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+{% endif %}
+  {% endfor %}
+    {% endif %}
+{% endblock %}
+
+
+>>>>>>> e814cc8 (Revert "Fixed video showing on other pages!")
