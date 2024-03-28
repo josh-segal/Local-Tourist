@@ -18,16 +18,47 @@
       onclick=window.location.href="{{ url_for('auth.logout') }}">Sign Out</button>
   </div>
 </nav>
-
-{% block header %}
-  <h1>{% block title %}Which place did you enjoy more? {% endblock %}
+<div class="wrapper">
+  <section class="rest">
+    <div class="topper-wrapper">
+      <h1>Which place did you enjoy more?</h1>
+    </div>
 {% endblock %}
 {% block content %} </h1>
-<form method="post" action="{{ url_for('list.GET_rank', user_id=g.user, attraction_id=attraction_id, name=name, location=location, lat=lat, lng=lng, leftIdx=((leftIdx+rightIdx) // 2), rightIdx=rightIdx, first_zero_comp=first_zero_comp) }}">
-        <button type="submit" class="action">{{ranked_list[((leftIdx+rightIdx) // 2)].get('name')}}</button>
-    </form>
-<form method="post" action="{{ url_for('list.GET_rank', user_id=g.user, attraction_id=attraction_id, name=name, location=location, lat=lat, lng=lng, leftIdx=leftIdx, rightIdx=((leftIdx+rightIdx) // 2), first_zero_comp=first_zero_comp) }}">
-        <button type="submit" class="action">{{name}}</button>
-    </form>
+<div class="attraction-wrapper-2">
+  <form method="post" action="{{ url_for('list.GET_rank', user_id=g.user, attraction_id=attraction_id, name=name, location=location, lat=lat, lng=lng, leftIdx=((leftIdx+rightIdx) // 2), rightIdx=rightIdx, first_zero_comp=first_zero_comp, photo_ref=photo_ref) }}">
+    <button type="submit" class="action ranking-button">
+      <div class="attraction"
+      style="background-image: linear-gradient(to bottom, #212529bf, rgba(255, 255, 255, 0.1)), url({{"
+      https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="}}{{ranked_list[((leftIdx+rightIdx) // 2)].get('photo_ref')}}{{ "&key=" }}{{ api_key }});">
+      <header>
+        <div class="attraction-top">
+          <h1 class="name">{{ ranked_list[((leftIdx+rightIdx) // 2)].get('name') }}</h1>
+          <div class="description">{{ ranked_list[((leftIdx+rightIdx) // 2)].get('location') }}</div>
+        </div>
+      </header>
+      <p class="body"> </p>
+    </div>
+    </button>
+</form>
+<form method="post" action="{{ url_for('list.GET_rank', user_id=g.user, attraction_id=attraction_id, name=name, location=location, lat=lat, lng=lng, leftIdx=leftIdx, rightIdx=((leftIdx+rightIdx) // 2), first_zero_comp=first_zero_comp, photo_ref=photo_ref) }}">
+    <button type="submit" class="action ranking-button">
+      <div class="attraction"
+      style="background-image: linear-gradient(to bottom, #212529bf, rgba(255, 255, 255, 0.1)), url({{"
+      https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="}}{{ photo_ref }}{{ "&key=" }}{{ api_key }});">
+      <header>
+        <div class="attraction-top">
+          <h1 class="name">{{ name }}</h1>
+          <h1>{{ place_id }}</h1>
+          <div class="description">{{ location }}</div>
+        </div>
+      </header>
+      <p class="body"> </p>
+    </div>
+    </button>
+</form>
+</div>
+  </section>
+</div>
 
 {% endblock %}

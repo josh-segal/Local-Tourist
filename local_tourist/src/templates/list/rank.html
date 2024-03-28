@@ -18,34 +18,42 @@
       onclick=window.location.href="{{ url_for('auth.logout') }}">Sign Out</button>
   </div>
 </nav>
-{% block header %}
-  <h1>{% block title %}My List{% endblock %}
-{% endblock %}
-{% block content %}
-    </h1>
-    <form action="{{ url_for('list.clear_rank', user_id=g.user) }}" method="post">
-    <input class="danger" type="submit" value="Delete rankings">
-  </form>
-  <div class="attraction-wrapper">
-    
-  </div>
-  {% for attraction in attractions %}
-    <article class="attraction">
+<div class="wrapper">
+  <section class="rest">
+    <div class="topper-wrapper">
+      <h1>All of your faves.</h1>
+      <div class="topper-button-wrapper">
+        <form action="{{ url_for('list.clear_rank', user_id=g.user) }}" method="post">
+          <button class="danger top-bar-button delete-from-plan" type="submit">Reset</button>
+        </form>
+      </div>
+    </div>
+    <div class="attraction-wrapper">
+    {% for attraction in attractions %}
+    <div class="ranking-wrapper">
+      <div class="ranking">
+        <h1>Ranked #{{ loop.index }} of {{ attractions|length }}</h1>
+      </div>
+      <div class="attraction attraction-pointy-top"
+      style="background-image: linear-gradient(to bottom, #212529bf, rgba(255, 255, 255, 0.1)), url({{"
+      https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="}}{{ attraction['photo_ref'] }}{{ "&key=" }}{{ api_key }});">
       <header>
-        <div>
-          <h1> {{ attraction['name'] }}</h1>
-          <div class="description">
-            Rank: {{ loop.index }}  <br>
-            <form action="{{ url_for('list.clear_single_rank', user_id=g.user, to_remove = loop.index - 1)}}" method="post">
-    <input type="submit" value="Delete Rank">
-</form>
-            </div>
+        <div class="attraction-top">
+          <h1 class="name">{{ attraction['name'] }}</h1>
+          <div class="description">{{ attraction['location'] }}</div>
+        </div>
+        <div class="attraction-bottom">
+          <form action="{{ url_for('list.clear_single_rank', user_id=g.user, to_remove = loop.index - 1)}}"
+            method="post">
+            <button type="submit" class="action delete-from-plan"><i class="fa fa-times icons"></i>Delete Rank</button>
+          </form>
         </div>
       </header>
       <p class="body"> </p>
-    </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
+    </div>
+    </div>
   {% endfor %}
+</div>
+  </section>
+</div>
 {% endblock %}
