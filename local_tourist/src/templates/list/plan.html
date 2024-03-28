@@ -21,13 +21,8 @@
 </nav>
 <div class="wrapper">
   <section class="rest">
-    <h1>{% block title %}My Plan{% endblock %}
-      {% endblock %}
-      {% block content %}
-    </h1>
     <div class="topper-wrapper">
       <h1>Okay, {{ g.user }}. Here's the plan.</h1>
-      <p>Are you ready to go?</p>
       <div class="topper-button-wrapper">
         <form action="{{ url_for('trip.map', user_id=g.user, mode='walking', api_key=api_key) }}">
           <button class="action top-bar-button b-register" type="submit">Generate Route</button>
@@ -45,7 +40,6 @@
         <header>
           <div class="attraction-top">
             <h1 class="name">{{ attraction['name'] }}</h1>
-            <h1>{{ attraction['place_id'] }}</h1>
             <div class="description">{{ attraction['location'] }}</div>
           </div>
           <div class="attraction-bottom">
