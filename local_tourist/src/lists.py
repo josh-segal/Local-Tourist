@@ -134,7 +134,9 @@ def rank(user_id):
 
     else:
         flash("You don't have any rankings yet.")
+
     return redirect(url_for('index', api_key=api_key))
+
 
 
 @bp.route('/add_to_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
@@ -165,17 +167,19 @@ def add_to_rank(user_id, attraction_id, name, location, lat, lng, photo_ref):
 
             return redirect(
                 url_for('list.GET_rank', user_id=user_id, attraction_id=attraction_id, name=name, location=location,
-                        lat=lat, lng=lng, leftIdx=0, rightIdx=n, first_zero_comp=first_zero_comp, api_key=api_key))
+                        lat=lat, lng=lng, leftIdx=0, rightIdx=n, first_zero_comp=first_zero_comp, api_key=api_key, photo_ref=photo_ref))
     else:
         user_doc_ref.update({'rank': [data]})
 
     flash('Attraction added to your ranking successfully.')
+
     return redirect(url_for('index', api_key=api_key))
 
 
+
 @bp.route('/GET_rank/<string:user_id>/<string:attraction_id>/<string:name>/<string:location>/<string:lat>/<string'
-          ':lng>/<int:leftIdx>/<int:rightIdx>/<int:first_zero_comp>', methods=['GET', 'POST'])
-def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx, first_zero_comp):
+          ':lng>/<int:leftIdx>/<int:rightIdx>/<int:first_zero_comp>/<string:photo_ref>', methods=['GET', 'POST'])
+def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx, first_zero_comp, photo_ref):
 
     db = get_db()
     attractions = db.collection('users').document(user_id)
@@ -188,7 +192,8 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
         'latitude': float(lat),
         'longitude': float(lng),
         'id': attraction_id,
-        'rank': leftIdx
+        'rank': leftIdx,
+        'photo_ref': photo_ref
     }
 
     if leftIdx == mid == 0:
@@ -209,7 +214,9 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
     if leftIdx >= rightIdx:
         new_ranked_list = ranked_list[:leftIdx] + [data] + ranked_list[leftIdx:]
         attractions.update({'rank': new_ranked_list})
+
         return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
+
 
     elif leftIdx == mid and not first_zero_comp and len(ranked_list) > 1:
         # Insert data at leftIdx
@@ -226,12 +233,13 @@ def GET_rank(user_id, attraction_id, name, location, lat, lng, leftIdx, rightIdx
         # Insert data at rightIdx
         new_ranked_list = ranked_list[:rightIdx] + [data] + ranked_list[rightIdx:]
         attractions.update({'rank': new_ranked_list})
+
         return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
     else:
 
         return render_template('list/GET_rank.html', ranked_list=ranked_list, user_id=user_id, leftIdx=leftIdx,
                                rightIdx=rightIdx, attraction_id=attraction_id, name=name, location=location,
-                               lat=lat, lng=lng, first_zero_comp=first_zero_comp, api_key=api_key)
+                               lat=lat, lng=lng, first_zero_comp=first_zero_comp, api_key=api_key, photo_ref=photo_ref)
 
 
 @bp.route('/clear_rank/<string:user_id>', methods=('POST',))

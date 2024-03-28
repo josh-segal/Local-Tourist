@@ -1,69 +1,120 @@
-{% extends 'base.html' %}
 {% block header %}
-{% if g.user %}
-
-  <h1>{% block title %}List of Attractions{% endblock %}</h1>
-
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<nav class='top-bar'>
+  <a id="logo-wrapper" href="{{ url_for('list.index', user_id=g.user) }}">
+    <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
+    <img id="wordmark" src="{{ url_for('static', filename='wordmark.png') }}">
+  </a>
+  {% if g.user %}
+  <div class="top-bar-back"></div>
+  <div class="user-top-buttons top-buttons">
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.index', user_id=g.user) }}">Home</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.plan', user_id=g.user) }}">My Plan</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.rank', user_id=g.user) }}">My Rankings</button>
+    <button type="button" class="top-bar-button b-register"
+      onclick=window.location.href="{{ url_for('auth.logout') }}">Sign Out</button>
+  </div>
+  {% else %}
+  <div class="guest-top-buttons top-buttons">
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('auth.login') }}">Sign In</button>
+    <button type="button" class="top-bar-button b-register"
+      onclick=window.location.href="{{ url_for('auth.register') }}">Sign Up</button>
+  </div>
+  {% endif %}
+</nav>
+<div class="wrapper">
+  {% if not g.user %}
+  <header class="video-container">
+    <video autoplay muted loop>
+      <source src="{{ url_for('static', filename='boston.mp4') }}" type="video/mp4" />
+    </video>
+    <div class="caption">
+      <h2>Travel like a local.</h2>
+      <div class="desc">This project is still in development. For the most up-to-date documentation and code check the
+        <a href="https://github.com/josh-segal/Local-Tourist">GitHub repository</a>.
+        Explore attractions by registering a new account or optionally using the demo login "test" with password "test".
+        </a>
+      </div>
+      <button type="button" class="top-bar-button b-learn-more"
+        onclick=window.location.href="{{ url_for('auth.register') }}">Learn More</button>
+    </div>
     {% endif %}
-{% if not g.user %}
-
-  <h1>Welcome to Local Tourist</h1>
+  </header>
+  <section class="rest">
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% endblock %}
+    {% block content %}
+    {% if not g.user %}
+    <div class="icon-wrapper">
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon1.png') }}">
+        <h1>Search Attractions</h1>
+        <p>Find attractions based on geographical location.</p>
+      </div>
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon2.png') }}">
+        <h1>Add to Plan</h1>
+        <p>Add attractions to your travel plan for easy access and organization.</p>
+      </div>
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon3.png') }}">
+        <h1>Optimize Your Trip</h1>
+        <p>Generate the most efficient routes between attractions in your plan for a seamless travel experience.</p>
+      </div>
+      <div class='icon-div'>
+        <img class='front-icon' src="{{ url_for('static', filename='icon4.png') }}">
+        <h1>Rank Attractions</h1>
+        <p>Rate attractions based on your personal experiences.</p>
+      </div>
+    </div>
     {% endif %}
+    {% if g.user %}
+    <div class="topper-wrapper">
+      <h1>Welcome back, {{ g.user }}!</h1>
+      <p>Choose a location to explore:</p>
+      <div class="topper-button-wrapper">
+        <form method="post" action="{{ url_for('list.change_location', location='Boston') }}">
+          <button type="submit" class="action top-bar-button b-register">Boston, MA</button>
+        </form>
+        <form method="post" action="{{ url_for('list.change_location', location='Leuven') }}">
+          <button type="submit" class="action top-bar-button b-register">Leuven, Belgium</button>
+        </form>
+      </div>
+    </div>
+    <div class="attraction-wrapper">
+      {% for attraction in attractions %}
+      <div class="attraction"
+        style="background-image: linear-gradient(to bottom, #212529bf, rgba(255, 255, 255, 0.1)), url({{"
+        https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="}}{{ attraction['photos'][0]['photo_reference'] }}{{ "&key=" }}{{ api_key }});">
+        <header>
+          <div class="attraction-top">
+            <h1 class="name">{{ attraction['name'] }}</h1>
+            <div class="description">{{ attraction['vicinity'] }}</div>
+          </div>
+          <div class="attraction-bottom">
+            <form method="post"
+              action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng'], photo_ref=attraction['photos'][0]['photo_reference']) }}">
+              <button type="submit" class="action add-to-plan"><i class="fa fa-plus-square icons"></i>Add to
+                plan</button>
+            </form>
+            <form method="post"
+              action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng'], photo_ref=attraction['photos'][0]['photo_reference']) }}">
+              <button type="submit" class="action rank-item"><i class="fa fa-trophy icons"></i>Rank item</button>
+            </form>
+          </div>
+        </header>
+        <p class="body"> </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}
-{% block content %}
-{% if not g.user %}
-    <p>Explore attractions by registering a new account or optionally using the demo login provided:
-<br> <b>Username</b>: test
-<br> <b>Password</b>: test</p>
-<div>
-                <h1>Search Attractions</h1>
-                <p>Find attractions based on geographical location.</p>
-            </div>
-            <div>
-                <h1>Add to Plan</h1>
-                <p>Add attractions to your travel plan for easy access and organization.</p>
-            </div>
-<div>
-                <h1>Optimize Your Trip</h1>
-                <p>Generate the most efficient routes between attractions in your plan for a seamless travel experience.</p>
-            </div>
-            <div>
-                <h1>Rank Attractions</h1>
-                <p>Rate attractions based on your personal experiences.</p>
-            </div>
-{% endif %}
-{% if g.user %}
-<p>Choose a location to explore:</p>
-<form method="post" action="{{ url_for('list.change_location', location='Boston') }}">
-        <button type="submit" class="action">Boston, MA</button>
-    </form>
-<form method="post" action="{{ url_for('list.change_location', location='Leuven') }}">
-        <button type="submit" class="action">Leuven, Belgium</button>
-    </form>
-  {% for attraction in attractions %}
-<article class="attraction">
-      <header>
-        <div>
-          <h1>{{ attraction['name'] }}</h1>
-          <div class="description">
-            location: {{ attraction['vicinity'] }} <br>
-            </div>
-        </div>
-    <form method="post" action="{{ url_for('list.add_to_trip', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng'], photo_ref=attraction['photos'][0]['photo_reference']) }}">
-        <button type="submit" class="action">Add to plan</button>
-    </form>
-        <form method="post" action="{{ url_for('list.add_to_rank', user_id=g.user, attraction_id=attraction['place_id'], name=attraction['name'], location=attraction['vicinity']|replace('/', ''), lat=attraction['geometry']['location']['lat'], lng=attraction['geometry']['location']['lng'], photo_ref=attraction['photos'][0]['photo_reference']) }}">
-        <button type="submit" class="action">Rank item</button>
-    </form>
-
-      </header>
-      <p class="body"> </p>
-    </article>
-    {% if not loop.last %}
-      <hr>
-{% endif %}
-  {% endfor %}
-    {% endif %}
-{% endblock %}
-
-

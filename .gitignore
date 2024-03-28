@@ -1,5 +1,26 @@
 key.json
+<<<<<<< HEAD
+<<<<<<< HEAD
+key.txt
+<<<<<<< HEAD
+.env
+venv/
+.idea/
+env/
+__pycache__/
+.DS_Store
+local_tourist/.DS_Store
+=======
+key.txt
+>>>>>>> df1a342 (adds map, secures api_key)
+=======
 key.txt
 .idea/
 env/
 venv/
+>>>>>>> b0cf558 (adds photo_ref to user attractions)
+=======
+.idea/
+env/
+venv/
+>>>>>>> main

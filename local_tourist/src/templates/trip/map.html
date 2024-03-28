@@ -1,89 +1,113 @@
-{% extends 'base.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 {% block header %}
-  <h1>{% block title %}Your Trip{% endblock %}</h1>
+<nav class='top-bar'>
+  <a id="logo-wrapper" href="{{ url_for('list.index', user_id=g.user) }}">
+    <img id="logo" src="{{ url_for('static', filename='logo.png') }}">
+    <img id="wordmark" src="{{ url_for('static', filename='wordmark.png') }}">
+  </a>
+  <div class="top-bar-back"></div>
+  <div class="user-top-buttons top-buttons">
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.index', user_id=g.user) }}">Home</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.plan', user_id=g.user) }}">My Plan</button>
+    <button type="button" class="top-bar-button b-log-in"
+      onclick=window.location.href="{{ url_for('list.rank', user_id=g.user) }}">My Rankings</button>
+    <button type="button" class="top-bar-button b-register"
+      onclick=window.location.href="{{ url_for('auth.logout') }}">Sign Out</button>
+  </div>
+</nav>
 {% endblock %}
-
 {% block content %}
-<head>
-    <style>
-        #map {
-            height: 400px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div id="map"></div>
-    <p>Your Itinerary</p>
-    <ul id="attractionOrder">
-        {% for i in range(attractions|length - 1) %}
-            <li>
-                {{i+1}}. {{ attractions[i].name }}
-                {% if i > 0 and i < attractions|length - 1 %}
-                        <a href="https://www.google.com/maps/dir/{{ attractions[i-1].latitude }},{{ attractions[i-1].longitude }}/{{ attractions[i].latitude }},{{ attractions[i].longitude }}" target="_blank">Get directions to {{ attractions[i].name }} from {{ attractions[i-1].name }}</a>
+<div class="wrapper">
+    <section class="rest">
+        <div class="topper-wrapper">
+            <h1>Let the trip begin!</h1>
+            <a id="directions">
+                <button class="top-bar-button b-register">Get Directions</button>
+            </a>
+            <div class="topper-button-wrapper">
+                <script>
+                    var waypoints = "";
+                    {% for attraction in attractions %}
+                    {% if not loop.last %}
+                    waypoints += "{{ attraction['latitude']|string }},{{ attraction['longitude']|string }}/";
                     {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+                    {% endfor %}
+        
+                    var base_url = "https://www.google.com/maps/dir//";
+                    var full_url = base_url + waypoints;
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap&loading=async"></script>
-
-    <script>
-
-    var attractionsArray = [];
-    {% for attraction in attractions %}
-        var attraction = {
-            name: "{{ attraction['name'] }}",
-            lat: {{ attraction['latitude'] }},
-            lng: {{ attraction['longitude'] }}
-        };
-        attractionsArray.push(attraction);
-    {% endfor %}
-
-    var optimalPath = [];
-        {% for point in optimal_path %}
-            optimalPath.push(point);
-        {% endfor %}
-
-    function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: attractionsArray[0].lat, lng: attractionsArray[0].lng},
-            zoom: 12
-        });
-
-        var directionsService = new google.maps.DirectionsService();
-        var directionsDisplay = new google.maps.DirectionsRenderer({
-            map: map
-        });
-
-        // Define waypoints for the walking route
-        var waypoints = [];
-        for (var i = 1; i < attractionsArray.length - 2; i++) {
-            waypoints.push({
-                location: {lat: attractionsArray[i].lat, lng: attractionsArray[i].lng},
-                stopover: true
-            });
-        }
-
-        // Request walking directions between waypoints
-        var request = {
-            origin: {lat: attractionsArray[0].lat, lng: attractionsArray[0].lng},
-            destination: {lat: attractionsArray[attractionsArray.length - 2].lat, lng: attractionsArray[attractionsArray.length - 2].lng},
-            waypoints: waypoints,
-            travelMode: 'WALKING'
-        };
-
-        directionsService.route(request, function(response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
+                    document.getElementById("directions").href = full_url;
+                    document.getElementById("directions").target = "_blank";      
+                </script>
+            </div>
+        </div>
+        <body>
+            
+            <div id="map"></div>
+        
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap&loading=async"></script>
+        
+            <script>
+            var attractionsArray = [];
+            {% for attraction in attractions %}
+                var attraction = {
+                    name: "{{ attraction['name'] }}",
+                    lat: {{ attraction['latitude'] }},
+                    lng: {{ attraction['longitude'] }}
+                };
+                attractionsArray.push(attraction);
+            {% endfor %}
+        
+            var optimalPath = [];
+                {% for point in optimal_path %}
+                    optimalPath.push(point);
+                {% endfor %}
+        
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: attractionsArray[0].lat, lng: attractionsArray[0].lng},
+                    zoom: 12
+                });
+        
+                var directionsService = new google.maps.DirectionsService();
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    map: map
+                });
+        
+                // Define waypoints for the walking route
+                var waypoints = [];
+                for (var i = 1; i < attractionsArray.length - 2; i++) {
+                    waypoints.push({
+                        location: {lat: attractionsArray[i].lat, lng: attractionsArray[i].lng},
+                        stopover: true
+                    });
+                }
+        
+                // Request walking directions between waypoints
+                var request = {
+                    origin: {lat: attractionsArray[0].lat, lng: attractionsArray[0].lng},
+                    destination: {lat: attractionsArray[attractionsArray.length - 2].lat, lng: attractionsArray[attractionsArray.length - 2].lng},
+                    waypoints: waypoints,
+                    travelMode: 'WALKING'
+                };
+        
+                directionsService.route(request, function(response, status) {
+                    if (status === 'OK') {
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
             }
-        });
-    }
-    window.initMap = initMap;
-</script>
-</body>
+            window.initMap = initMap;
+        </script>
+        </body>
+        <div class="literally-nothing"></div>
+    </section>
+</div>
 <html>
 {% endblock %}
