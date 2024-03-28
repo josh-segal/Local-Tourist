@@ -119,7 +119,12 @@ def clear_single_plan(user_id, user_attraction_id):
     doc_ref = db.collection('users').document(user_id)
     target_doc_ref = db.collection('attractions').document(user_attraction_id).get().to_dict()
     doc_ref.update({'plan': firebase.firestore.ArrayRemove([target_doc_ref])})
-    return redirect(url_for('list.plan', user_id=user_id, api_key=api_key))
+    user_doc = doc_ref.get().to_dict()
+    if not user_doc.get('plan'):
+        clear_plan(user_id)
+        return redirect(url_for('index', api_key=api_key))
+    else:
+        return redirect(url_for('list.plan', user_id=user_id, api_key=api_key))
 
 
 @bp.route('/rank/<string:user_id>')
@@ -269,7 +274,11 @@ def clear_single_rank(user_id, to_remove):
             new_ranked_list = ranked_list[:to_remove] + ranked_list[(to_remove + 1):]
         attractions.update({'rank': new_ranked_list})
 
-    return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
+    if not db.collection('users').document(user_id).get().to_dict().get('rank'):
+        attractions.update({'rank': firebase.firestore.DELETE_FIELD})
+        return redirect(url_for('index', api_key=api_key))
+    else:
+        return redirect(url_for('list.rank', user_id=user_id, api_key=api_key))
 
 
 def user_plan_db_exists(user_id):
