@@ -12,8 +12,7 @@ The "Local Tourist" project aims to provide users with personalized sorting of a
 
 ## Roadmap
 These features are planned implementations in future builds:
-- Personalized sorting of attractions based on user preferences. --> Reworking with new data after database migration
-- ~~Attractions ranking functionality, allowing users to intuitively rank attractions they have visited.~~ **Implemented**
+- Personalized sorting of attractions based on users similarity scores with other users
 - Group creation and group trip planning
 - AI NLP solution to suggest plans and attractions with automated feature engineering
 - Robust testing framework
