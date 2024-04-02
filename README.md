@@ -39,9 +39,3 @@ API documentation for integrating with Google Cloud Platform and the Google Maps
 
 ## Acknowledgments
 Flask Quickstart application tutorial: This tutorial provided essential guidance for setting up basic page routes, database integration, and getting started with Flask application development. It served as a valuable resource for initiating the project's development process.
-
-## Contributing
-This project is solely developed for educational purposes and is not open to contributions from other developers.
-
-## License
-The project defaults to the standard licensing terms.
