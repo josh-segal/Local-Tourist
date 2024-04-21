@@ -20,7 +20,7 @@ These features are planned implementations in future builds:
 ## Installation
 This project is deployed via Google App Engine and can be accessed through this link:
 <br> https://tourist-412606.uk.r.appspot.com
-<br> A demo login is username: "test", password: "test," or you may register your own profile for the full experience. 
+<br> Create an account to explore all of our features!
 
 
 ## Configuration
