@@ -1,6 +1,6 @@
 # Local Tourist
 
-![App Home Page](homePage.png)
+![App Home Page](local_tourist/src/static/homePage.png)
 
 ## Project Overview
 The "Local Tourist" project aims to provide users with personalized sorting of attractions, optimal routes for visiting attractions, and intuitive attraction ranking capabilities. For me, this project serves as a platform for gaining experience in working with cloud deployment, REST API connections, all things database, algorithms, Python, and the Flask framework.
