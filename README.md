@@ -5,6 +5,15 @@
 ## Project Overview
 The "Local Tourist" project aims to provide users with personalized sorting of attractions, optimal routes for visiting attractions, and intuitive attraction ranking capabilities. For me, this project serves as a platform for gaining experience in working with cloud deployment, REST API connections, all things database, algorithms, Python, and the Flask framework.
 
+## Tech Stack
+
+- **Programming Language**: Local Tourist’s backend is coded in `Python` and frontend in `HTML/CSS`.
+- **Web Framework**: The web framework is built using `Flask`, a lightweight web application framework.
+- **Deployment Tools**: `Google Cloud` is used to deploy the website on Google App Engine
+- **Libraries**: The `Google Maps API` library was used extensively for attraction indexing, map display, and route pathfinding
+- **Version Control**: `Git` was employed for version control, allowing for efficient collaboration with team members.
+- **Documentation Tools**: The codebase is well-commented to facilitate understanding and maintenance.
+
 ### Key Features
 - Attraction searching based on geographical locations.
 - Creation and modification of personalized plans for visiting attractions.
